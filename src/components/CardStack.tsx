@@ -3,7 +3,7 @@ import BasicCard from './BasicCard'
 
 function CardStack() {
   return (
-    <Stack gap={2} className="col-md-5 mx-auto">
+    <Stack gap={2} className='align-items-center py-2'>
         <BasicCard/>
         <BasicCard/>
     </Stack>
