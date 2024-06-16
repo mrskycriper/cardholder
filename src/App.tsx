@@ -4,7 +4,7 @@ import CardStack from './components/CardStack';
 
 function App() {
   return (
-    <div className="App" data-bs-theme="dark">
+    <div className="App">
       <Header/>
       <CardStack/>
     </div>
