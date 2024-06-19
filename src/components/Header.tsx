@@ -4,14 +4,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import ImportModal from './ImportModal'
 
 function Header() {
-  return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand>Кошелёк</Navbar.Brand>
-        <ImportModal/>
-      </Container>
-    </Navbar>
-  );
+    return (
+        <Navbar expand="lg" className="bg-body-tertiary">
+            <Container>
+                <Navbar.Brand>Кошелёк</Navbar.Brand>
+                <ImportModal />
+            </Container>
+        </Navbar>
+    );
 }
 
 export default Header;
