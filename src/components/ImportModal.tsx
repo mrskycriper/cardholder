@@ -6,7 +6,10 @@ import Form from 'react-bootstrap/Form';
 async function saveFile(file: File) {
     // @ts-ignore
     const opfsRoot = await navigator.storage.getDirectory();
-    const fileHandle = await opfsRoot.getFileHandle(file.name, {
+    const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
+        create: true,
+      });
+    const fileHandle = await defaultDirectory.getFileHandle(file.name, {
         create: true,
     });
     // @ts-ignore
@@ -16,21 +19,20 @@ async function saveFile(file: File) {
     await writable.close();
 }
 
-async function catchInput() {
-    // @ts-ignore
-    let inputElement: HTMLInputElement = document.getElementById("pkpass");
-    if (inputElement && inputElement.files) {
-        await saveFile(inputElement.files[0]);
-    }
-}
-
 function ImportModal() {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    window.addEventListener("onLoad", catchInput);
+    const handleSave = async () => {
+        // @ts-ignore
+        let inputElement: HTMLInputElement = document.getElementById("pkpass");
+        if (inputElement && inputElement.files) {
+            await saveFile(inputElement.files[0]);
+        }
+        setShow(false)
+    }
 
     return (
         <>
@@ -38,7 +40,7 @@ function ImportModal() {
                 <i className="ri-add-fill"></i>
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Импорт</Modal.Title>
                 </Modal.Header>
@@ -52,7 +54,7 @@ function ImportModal() {
                     <Button variant="secondary" onClick={handleClose}>
                         Закрыть
                     </Button>
-                    <Button variant="primary" onClick={catchInput}>
+                    <Button variant="primary" onClick={handleSave}>
                         Сохранить
                     </Button>
                 </Modal.Footer>
