@@ -2,11 +2,13 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 
-import Pass from '../../interfaces/IPass';
-import PassBundle from '../../interfaces/IPassBundle';
+import Pass from '../../interfaces/Pass';
+import PassBundle from '../../interfaces/PassBundle';
 
 function BasicCard({ passBundle }: { passBundle: PassBundle}) {
     const pass = passBundle.objects.pass
+
+
     
     let logoSrc: string = ''
     if (passBundle.files.logo) {

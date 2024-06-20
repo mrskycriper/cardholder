@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
-import PassBundle from '../../interfaces/IPassBundle';
+import PassBundle from '../../interfaces/PassBundle';
 
 self.onmessage = async (e: MessageEvent<String>) => {
     const opfsRoot = await navigator.storage.getDirectory();
