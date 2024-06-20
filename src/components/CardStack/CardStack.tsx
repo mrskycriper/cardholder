@@ -15,9 +15,6 @@ function CardStack() {
         if (window.Worker) {
             worker.postMessage('get default');
             worker.onmessage = async (e: MessageEvent<PassBundle[]>) => {
-                // for (const entry of e.data) {
-                //     console.log(`${entry.name}: ${entry.objects.pass.toString()}`);
-                // }
                 setCards(e.data);
             };
         }
@@ -26,8 +23,8 @@ function CardStack() {
     return (
         <Stack gap={2} className='align-items-center py-2'>
             {
-                cards.map((pass) => (
-                    <BasicCard key={pass.name} pass={pass.objects.pass} />
+                cards.map((passBundle) => (
+                    <BasicCard key={passBundle.id} passBundle={passBundle} />
                 ))
             }
         </Stack>
