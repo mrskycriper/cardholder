@@ -1,7 +1,7 @@
 import Pass from "./IPass";
 
 export default interface PassBundle {
-    name: string,
+    id: string,
     objects: {
         pass: Pass,
     },
