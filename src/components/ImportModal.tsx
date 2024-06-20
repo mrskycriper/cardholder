@@ -1,35 +1,29 @@
-import { useState } from 'react';
+import { useMemo, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-async function saveFile(file: File) {
-    // @ts-ignore
-    const opfsRoot = await navigator.storage.getDirectory();
-    const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
-        create: true,
-      });
-    const fileHandle = await defaultDirectory.getFileHandle(file.name, {
-        create: true,
-    });
-    // @ts-ignore
-    const writable = await fileHandle.createWritable();
-    const fileData = await file.arrayBuffer()
-    await writable.write(fileData);
-    await writable.close();
-}
-
 function ImportModal() {
     const [show, setShow] = useState(false);
+    const importWorker: Worker = useMemo(
+        () => new Worker(new URL("./ImportModal/import-worker.ts", import.meta.url)),
+        []
+    );
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleSave = async () => {
-        // @ts-ignore
+        // @ts-ignore 
+        // Should never be null
         let inputElement: HTMLInputElement = document.getElementById("pkpass");
         if (inputElement && inputElement.files) {
-            await saveFile(inputElement.files[0]);
+            if (window.Worker) {
+                importWorker.postMessage(inputElement.files[0]);
+                importWorker.onmessage = (e: MessageEvent<string>) => {
+                    console.log("Message posted from webworker: " + e.data);
+                };
+            }
         }
         setShow(false)
     }
@@ -47,7 +41,7 @@ function ImportModal() {
                 <Modal.Body>
                     <Form.Group className="mb-3">
                         <Form.Label>Выберите файл .pkpass</Form.Label>
-                        <Form.Control type="file" id='pkpass' accept='.pkpass,application/vnd.apple.pkpass'/>
+                        <Form.Control type="file" id='pkpass' accept='.pkpass,application/vnd.apple.pkpass' />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
