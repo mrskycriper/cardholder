@@ -1,16 +1,11 @@
+import Barcode from "./Barcode"
+
 interface passField {
     key: string,
     label: string,
     value: string | number,
     textAlignment: 'PKTextAlignmentLeft' | 'PKTextAlignmentCenter' | 'PKTextAlignmentRight' | 'PKTextAlignmentNatural',
     numberStyle: 'PKNumberStyleDecimal' | 'PKNumberStylePercent' | 'PKNumberStyleScientific' | 'PKNumberStyleSpellOut',
-}
-
-interface barcode {
-    altText: string,
-    message: string,
-    format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'PKBarcodeFormatAztec' | 'PKBarcodeFormatCode128',
-    messageEncoding: string
 }
 
 export default interface Pass {
@@ -26,7 +21,7 @@ export default interface Pass {
         auxiliaryFields: passField[],
         backFields: passField[],
     },
-    barcodes: barcode[],
+    barcodes: Barcode[],
     labelColor: string,
     foregroundColor: string,
     backgroundColor: string
