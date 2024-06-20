@@ -1,5 +1,5 @@
 import Stack from 'react-bootstrap/Stack';
-import BasicCard from './BasicCard'
+import BasicCard from '../Card/BasicCard'
 
 function CardStack() {
     return (
