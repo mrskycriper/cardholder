@@ -1,9 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
-interface Entry {
-    name: string,
-    file: File
-}
+import PassBundle from '../../interfaces/IPassBundle';
 
 self.onmessage = async (e: MessageEvent<String>) => {
     console.log(`Worker: got ${e.data}`)
@@ -12,27 +9,15 @@ self.onmessage = async (e: MessageEvent<String>) => {
         create: true,
     });
 
-    const files: Entry[] = [];
+    const files: PassBundle[] = [];
 
-    // @ts-ignore
-    for await (const [key, value] of defaultDirectory.entries()) {
-        //console.log({ key, value });
+    for await (const [directoryName, directoryHandle] of defaultDirectory.entries()) {
         // @ts-ignore
-        const fileHandle = await value.getFileHandle('pass.json');
-        const file = await fileHandle.getFile()
-        files.push({ name: key, file: file })
+        const passFileHandle: FileSystemFileHandle = await directoryHandle.getFileHandle('pass.json');
+        const passFile: File = await passFileHandle.getFile()
+        const passObject = JSON.parse(await passFile.text())
+        files.push({ name: directoryName, objects: {pass: passObject} })
     }
-
-    // const fileHandle = await defaultDirectory.getFileHandle(e.data.name, {
-    //     create: true,
-    // });
-
-    // // @ts-ignore
-    // // Thinks property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle' for some reason
-    // const accessHandle = await fileHandle.createSyncAccessHandle();
-    // const fileData = await e.data.arrayBuffer()
-    // accessHandle.write(fileData)
-    // accessHandle.close()
 
     self.postMessage(files);
 };
