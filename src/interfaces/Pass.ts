@@ -14,7 +14,7 @@ export default interface Pass {
         auxiliaryFields: PassField[],
         backFields: PassField[],
     },
-    barcodes: Barcode[],
+    barcodes?: Barcode[],
     labelColor: string,
     foregroundColor: string,
     backgroundColor: string
