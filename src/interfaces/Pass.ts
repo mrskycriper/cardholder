@@ -1,12 +1,5 @@
 import Barcode from "./Barcode"
-
-interface passField {
-    key: string,
-    label: string,
-    value: string | number,
-    textAlignment: 'PKTextAlignmentLeft' | 'PKTextAlignmentCenter' | 'PKTextAlignmentRight' | 'PKTextAlignmentNatural',
-    numberStyle: 'PKNumberStyleDecimal' | 'PKNumberStylePercent' | 'PKNumberStyleScientific' | 'PKNumberStyleSpellOut',
-}
+import PassField from "./PassField"
 
 export default interface Pass {
     formatVersion: number,
@@ -15,11 +8,11 @@ export default interface Pass {
     organizationName: string,
     description: string,
     storeCard: {
-        headerFields: passField[],
-        primaryFields: passField[],
-        secondaryFields: passField[],
-        auxiliaryFields: passField[],
-        backFields: passField[],
+        headerFields: PassField[],
+        primaryFields: PassField[],
+        secondaryFields: PassField[],
+        auxiliaryFields: PassField[],
+        backFields: PassField[],
     },
     barcodes: Barcode[],
     labelColor: string,
