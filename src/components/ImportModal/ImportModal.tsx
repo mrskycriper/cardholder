@@ -41,7 +41,7 @@ function ImportModal() {
                 <Modal.Body>
                     <Form.Group className="mb-3">
                         <Form.Label>Выберите файл .pkpass</Form.Label>
-                        <Form.Control type="file" id='pkpass' accept='.pkpass,application/vnd.apple.pkpass' />
+                        <Form.Control type="file" id='pkpass' /*accept='.pkpass,application/vnd.apple.pkpass'*/ />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
