@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/cardholder/static/css/main.212491ec.css",
+    "main.js": "/cardholder/static/js/main.dd97067a.js",
+    "static/js/488.620e00f1.chunk.js": "/cardholder/static/js/488.620e00f1.chunk.js",
+    "static/js/766.9e6f08c7.chunk.js": "/cardholder/static/js/766.9e6f08c7.chunk.js",
+    "static/js/453.56292dfe.chunk.js": "/cardholder/static/js/453.56292dfe.chunk.js",
+    "static/js/159.74658abe.chunk.js": "/cardholder/static/js/159.74658abe.chunk.js",
+    "static/media/remixicon.svg?t=1718271040674": "/cardholder/static/media/remixicon.f38690bdde29bddbc211.svg",
+    "static/media/remixicon.eot?t=1718271040674": "/cardholder/static/media/remixicon.d87042cf9a3f67d1cab2.eot",
+    "static/media/remixicon.ttf?t=1718271040674": "/cardholder/static/media/remixicon.88da6179288d7835c2f0.ttf",
+    "static/media/remixicon.woff?t=1718271040674": "/cardholder/static/media/remixicon.1bdc36c90398c9d667d1.woff",
+    "static/media/remixicon.woff2?t=1718271040674": "/cardholder/static/media/remixicon.8aece9ab0de67b79cfda.woff2",
+    "service-worker.js": "/cardholder/service-worker.js",
+    "index.html": "/cardholder/index.html",
+    "main.212491ec.css.map": "/cardholder/static/css/main.212491ec.css.map",
+    "main.dd97067a.js.map": "/cardholder/static/js/main.dd97067a.js.map",
+    "488.620e00f1.chunk.js.map": "/cardholder/static/js/488.620e00f1.chunk.js.map",
+    "766.9e6f08c7.chunk.js.map": "/cardholder/static/js/766.9e6f08c7.chunk.js.map",
+    "453.56292dfe.chunk.js.map": "/cardholder/static/js/453.56292dfe.chunk.js.map",
+    "159.74658abe.chunk.js.map": "/cardholder/static/js/159.74658abe.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.212491ec.css",
+    "static/js/main.dd97067a.js"
+  ]
+}
