@@ -14,7 +14,7 @@ self.onmessage = async (e: MessageEvent<File>) => {
 
     JSZip.loadAsync(await e.data.arrayBuffer())
         .then(function (zip) {
-            zip.forEach(async function (relativePath, zipEntry) {
+            zip.forEach(async function (_relativePath, zipEntry) {
                 const fileHandle = await unzippedDirectory.getFileHandle(zipEntry.name, {
                     create: true,
                 });

@@ -1,4 +1,3 @@
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import { toSVG } from 'bwip-js';
@@ -30,14 +29,7 @@ function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'P
     return result;
 }
 
-function stringToHTMLElement(str: string) {
-    var hostElement = document.createElement('template');
-    hostElement.innerHTML = str;
-    return hostElement;
-  }
-  
-
-function BasicCard({ passBundle }: { passBundle: PassBundle}) {
+function BasicCard({ passBundle }: { passBundle: PassBundle }) {
     const pass: Pass = passBundle.objects.pass;
 
     let barcode: Barcode;
@@ -49,19 +41,19 @@ function BasicCard({ passBundle }: { passBundle: PassBundle}) {
             svg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
         }
     }
-    
+
     let logoSrc: string = '';
     if (passBundle.files.logo) {
         logoSrc = URL.createObjectURL(passBundle.files.logo);
     }
 
     return (
-        <Card style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor}}>
+        <Card style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
             <Card.Header>
-                {passBundle.files.logo ? <Image src={logoSrc} style={{maxWidth: '50%'}}/> : null}
+                {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
             </Card.Header>
             <Card.Body>
-                {svg !== '' ? <svg dangerouslySetInnerHTML={{__html: svg}} style={{background: 'white', maxWidth: '100%'}}/> : null}
+                {svg !== '' ? <svg dangerouslySetInnerHTML={{ __html: svg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
             </Card.Body>
         </Card>
     );
