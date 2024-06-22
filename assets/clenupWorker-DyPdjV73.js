@@ -1,0 +1,1 @@
+(function(){"use strict";self.onmessage=async t=>{const e=await navigator.storage.getDirectory();console.log(await e.getDirectoryHandle("default")),await e.removeEntry("default",{recursive:!0}),self.postMessage("DONE")}})();
