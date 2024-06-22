@@ -7,7 +7,7 @@ import PassBundle from '../../interfaces/PassBundle';
 function CardStack() {
     const [cards, setCards] = useState([] as PassBundle[]);
     const worker: Worker = useMemo(
-        () => new Worker(new URL("./worker.ts", import.meta.url)),
+        () => new Worker(new URL("./worker.ts", import.meta.url), {type: 'module'}),
         []
     );
 
