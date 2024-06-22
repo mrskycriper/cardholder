@@ -2,7 +2,7 @@
 
 import PassBundle from '../../interfaces/PassBundle';
 
-self.onmessage = async (e: MessageEvent<String>) => {
+self.onmessage = async (_e: MessageEvent<String>) => {
     const opfsRoot = await navigator.storage.getDirectory();
     const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
         create: true,
@@ -18,7 +18,7 @@ self.onmessage = async (e: MessageEvent<String>) => {
         const passFile: File = await passFileHandle.getFile()
         const passObject = JSON.parse(await passFile.text())
 
-        passBundle = { id: directoryName, objects: {pass: passObject}, files: {} }
+        passBundle = { id: directoryName, objects: { pass: passObject }, files: {} }
 
         let logoFileHandle: FileSystemFileHandle | undefined = undefined;
         try {

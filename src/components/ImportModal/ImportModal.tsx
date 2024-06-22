@@ -20,7 +20,7 @@ function ImportModal() {
         if (inputElement && inputElement.files) {
             if (window.Worker) {
                 importWorker.postMessage(inputElement.files[0]);
-                importWorker.onmessage = (e: MessageEvent<string>) => {
+                importWorker.onmessage = (_e: MessageEvent<string>) => {
                     //console.log("Message posted from webworker: " + e.data);
                 };
             }
