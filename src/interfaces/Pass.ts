@@ -15,6 +15,7 @@ export default interface Pass {
         backFields: PassField[],
     },
     barcodes?: Barcode[],
+    barcode?: Barcode,
     labelColor: string,
     foregroundColor: string,
     backgroundColor: string

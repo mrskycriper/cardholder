@@ -40,6 +40,9 @@ function BasicCard({ passBundle }: { passBundle: PassBundle }) {
             barcode = pass.barcodes[0];
             svg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
         }
+    } else if (pass.barcode) {
+        barcode = pass.barcode;
+        svg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
     }
 
     let logoSrc: string = '';
