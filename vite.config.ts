@@ -38,4 +38,5 @@ export default defineConfig({
         https: true,
         host: true,
     },
+    base : '/cardholder/'
 })
