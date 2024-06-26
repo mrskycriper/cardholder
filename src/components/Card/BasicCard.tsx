@@ -1,5 +1,4 @@
-import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image';
+import { Card, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
 import Pass from '../../interfaces/Pass';
@@ -54,7 +53,7 @@ function BasicCard({ passBundle }: { passBundle: PassBundle }) {
         <Card style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
             <Card.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
-                {pass.logoText ? pass.logoText : null}
+                {pass.logoText ? <Card.Title>{pass.logoText}</Card.Title> : null}
             </Card.Header>
             <Card.Body>
                 {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
