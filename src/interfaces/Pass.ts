@@ -4,7 +4,7 @@ import {PassFields, BoardingPassFields } from "./PassFields"
 export default interface Pass {
     formatVersion: number,
     passTypeIdentifier: string,
-    logoText: string,
+    logoText?: string,
     organizationName: string,
     description: string,
     storeCard?: PassFields,
