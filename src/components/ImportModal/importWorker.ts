@@ -8,7 +8,8 @@ self.onmessage = async (e: MessageEvent<File>) => {
     const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
         create: true,
     });
-    const unzippedDirectory = await defaultDirectory.getDirectoryHandle(e.data.name, {
+    const uuid = self.crypto.randomUUID();
+    const unzippedDirectory = await defaultDirectory.getDirectoryHandle(uuid, {
         create: true,
     });
 
