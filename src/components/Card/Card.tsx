@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card as BootstrapCard, Button, Image } from 'react-bootstrap';
+import { Card as BootstrapCard, Button, ButtonGroup, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
 import Pass, { PassType } from '../../interfaces/Pass';
@@ -49,7 +49,7 @@ function getPassType(pass: Pass): PassType {
 
 function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): PassField[] | undefined {
     let fieldsObject = pass[passType]
-    if (fieldsObject !== undefined){
+    if (fieldsObject !== undefined) {
         let fieldsArray = fieldsObject[fieldType]
         if (fieldsArray !== undefined) {
             if (fieldsArray.length > 0) {
@@ -60,8 +60,16 @@ function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): Pa
 }
 
 function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
-    const [show, setShow] = useState(false);
-    const handleToggle = () => setShow(!show);
+    const [showFront, setShowFront] = useState(false);
+    const [showBack, setShowBack] = useState(false);
+    const handleExpandFront = () => {
+        setShowBack(false);
+        setShowFront(!showFront);
+    }
+    const handleExpandBack = () => {
+        setShowFront(false);
+        setShowBack(!showBack);
+    }
     const pass: Pass = passBundle.objects.pass;
 
     const passType: PassType = getPassType(pass);
@@ -101,7 +109,7 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
                     </>
                 )) : null}
             </BootstrapCard.Header>
-            {show ?
+            {showFront ?
                 <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
                     {primaryFields ? primaryFields.map((field) => (
                         <>
@@ -124,10 +132,25 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
                     {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
                 </BootstrapCard.Body>
                 : null}
+            {showBack ?
+                <BootstrapCard.Body>
+                    {backFields ? backFields.map((field) => (
+                        <>
+                            <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
+                            <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
+                        </>
+                    )) : null}
+                </BootstrapCard.Body>
+                : null}
             <BootstrapCard.Footer>
-                <Button onClick={handleToggle}>
-                    {show ? <i className={"ri-contract-up-down-fill"} /> : <i className={"ri-expand-up-down-fill"} />}
-                </Button>
+                <ButtonGroup>
+                    <Button onClick={handleExpandFront}>
+                        {showFront ? <i className={"ri-contract-up-down-fill"} /> : <i className={"ri-expand-up-down-fill"} />}
+                    </Button>
+                    <Button onClick={handleExpandBack}>
+                        {showBack ? <i className={"ri-close-circle-fill"} /> : <i className={"ri-information-fill"} />}
+                    </Button>
+                </ButtonGroup>
             </BootstrapCard.Footer>
         </BootstrapCard>
     );
