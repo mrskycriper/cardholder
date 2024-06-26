@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 function ImportModal() {
     const [show, setShow] = useState(false);
     const importWorker: Worker = useMemo(
-        () => new Worker(new URL("./import-worker.ts", import.meta.url), {type: 'module'}),
+        () => new Worker(new URL("./importWorker.ts", import.meta.url), {type: 'module'}),
         []
     );
 
