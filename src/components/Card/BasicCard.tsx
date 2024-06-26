@@ -54,6 +54,7 @@ function BasicCard({ passBundle }: { passBundle: PassBundle }) {
         <Card style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
             <Card.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
+                {pass.logoText ? pass.logoText : null}
             </Card.Header>
             <Card.Body>
                 {svg !== '' ? <svg dangerouslySetInnerHTML={{ __html: svg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
