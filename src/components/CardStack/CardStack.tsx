@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import Stack from 'react-bootstrap/Stack';
-import BasicCard from '../Card/BasicCard'
+import Card from '../Card/Card'
 
 import PassBundle from '../../interfaces/PassBundle';
 
@@ -24,7 +24,7 @@ function CardStack() {
         <Stack gap={2} className='align-items-center py-2'>
             {
                 cards.map((passBundle) => (
-                    <BasicCard key={passBundle.id} passBundle={passBundle} />
+                    <Card key={passBundle.id} passBundle={passBundle} />
                 ))
             }
         </Stack>

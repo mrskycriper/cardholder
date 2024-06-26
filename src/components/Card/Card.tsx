@@ -1,4 +1,4 @@
-import { Card, Image } from 'react-bootstrap';
+import { Card as BootstrapCard, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
 import Pass from '../../interfaces/Pass';
@@ -28,7 +28,7 @@ function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'P
     return result;
 }
 
-function BasicCard({ passBundle }: { passBundle: PassBundle }) {
+function Card({ passBundle }: { passBundle: PassBundle }) {
     const pass: Pass = passBundle.objects.pass;
 
     let barcode: Barcode;
@@ -50,16 +50,16 @@ function BasicCard({ passBundle }: { passBundle: PassBundle }) {
     }
 
     return (
-        <Card style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
-            <Card.Header>
+        <BootstrapCard style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
+            <BootstrapCard.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
-                {pass.logoText ? <Card.Title>{pass.logoText}</Card.Title> : null}
-            </Card.Header>
-            <Card.Body>
+                {pass.logoText ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
+            </BootstrapCard.Header>
+            <BootstrapCard.Body>
                 {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
-            </Card.Body>
-        </Card>
+            </BootstrapCard.Body>
+        </BootstrapCard>
     );
 }
 
-export default BasicCard;
+export default Card;
