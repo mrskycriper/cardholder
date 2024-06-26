@@ -1,4 +1,5 @@
-import { Card as BootstrapCard, Image } from 'react-bootstrap';
+import { useState } from "react";
+import { Card as BootstrapCard, Button, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
 import Pass from '../../interfaces/Pass';
@@ -28,7 +29,9 @@ function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'P
     return result;
 }
 
-function Card({ passBundle }: { passBundle: PassBundle }) {
+function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
+    const [show, setShow] = useState(false);
+    const handleToggle = () => setShow(!show);
     const pass: Pass = passBundle.objects.pass;
 
     let barcode: Barcode;
@@ -55,9 +58,16 @@ function Card({ passBundle }: { passBundle: PassBundle }) {
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
                 {pass.logoText ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
             </BootstrapCard.Header>
-            <BootstrapCard.Body>
-                {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
-            </BootstrapCard.Body>
+            {show ?
+                <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
+                    {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
+                </BootstrapCard.Body>
+                : null}
+            <BootstrapCard.Footer>
+                <Button onClick={handleToggle}>
+                    {show ? <i className={"ri-contract-up-down-fill"} /> : <i className={"ri-expand-up-down-fill"} />}
+                </Button>
+            </BootstrapCard.Footer>
         </BootstrapCard>
     );
 }
