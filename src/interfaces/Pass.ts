@@ -18,3 +18,5 @@ export default interface Pass {
     foregroundColor: string,
     backgroundColor: string
 }
+
+export type PassType = 'storeCard' | 'boardingPass' | 'coupon' | 'eventTicket' | 'generic'

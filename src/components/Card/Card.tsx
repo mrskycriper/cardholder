@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Card as BootstrapCard, Button, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
-import Pass from '../../interfaces/Pass';
+import Pass, { PassType } from '../../interfaces/Pass';
 import PassBundle from '../../interfaces/PassBundle';
 import Barcode from '../../interfaces/Barcode';
-import { PassFields } from "../../interfaces/PassFields";
+import { PassFieldType, PassFields } from "../../interfaces/PassFields";
 import PassField from "../../interfaces/PassField";
 
 function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'PKBarcodeFormatAztec' | 'PKBarcodeFormatCode128') {
@@ -31,94 +31,45 @@ function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'P
     return result;
 }
 
+function getPassType(pass: Pass): PassType {
+    let passType: PassType;
+    if (pass.storeCard) {
+        passType = 'storeCard';
+    } else if (pass.boardingPass) {
+        passType = 'boardingPass';
+    } else if (pass.coupon) {
+        passType = 'coupon';
+    } else if (pass.eventTicket) {
+        passType = 'eventTicket';
+    } else {
+        passType = 'generic';
+    }
+    return passType;
+}
+
+function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): PassField[] | undefined {
+    let fieldsObject = pass[passType]
+    if (fieldsObject !== undefined){
+        let fieldsArray = fieldsObject[fieldType]
+        if (fieldsArray !== undefined) {
+            if (fieldsArray.length > 0) {
+                return fieldsArray
+            }
+        }
+    }
+}
+
 function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
     const [show, setShow] = useState(false);
     const handleToggle = () => setShow(!show);
     const pass: Pass = passBundle.objects.pass;
 
-    let passType: 'storeCard' | 'boardingPass' | 'coupon' | 'eventTicket' | 'generic'
-
-    if (pass.storeCard) {
-        passType = 'storeCard'
-    } else if (pass.boardingPass) {
-        passType = 'boardingPass'
-    } else if (pass.coupon) {
-        passType = 'coupon'
-    } else if (pass.eventTicket) {
-        passType = 'eventTicket'
-    } else {
-        passType = 'generic'
-    }
-
-    let headerFields: PassField[] | undefined;
-
-    switch (passType) {
-        case "storeCard": {
-            if (pass.storeCard && pass.storeCard.headerFields && pass.storeCard.headerFields.length > 0) {
-                headerFields = pass.storeCard.headerFields;
-            }
-            break;
-        }
-        case "boardingPass": {
-            if (pass.boardingPass && pass.boardingPass.headerFields && pass.boardingPass.headerFields.length > 0) {
-                headerFields = pass.boardingPass.headerFields;
-            }
-            break;
-        }
-        case "coupon": {
-            if (pass.coupon && pass.coupon.headerFields && pass.coupon.headerFields.length > 0) {
-                headerFields = pass.coupon.headerFields;
-            }
-            break;
-        }
-        case "eventTicket": {
-            if (pass.eventTicket && pass.eventTicket.headerFields && pass.eventTicket.headerFields.length > 0) {
-                headerFields = pass.eventTicket.headerFields;
-            }
-            break;
-        }
-        case "generic": {
-            if (pass.generic && pass.generic.headerFields && pass.generic.headerFields.length > 0) {
-                headerFields = pass.generic.headerFields;
-            }
-            break;
-        }
-    }
-
-    let primaryFields: PassField[] | undefined;
-
-    switch (passType) {
-        case "storeCard": {
-            if (pass.storeCard && pass.storeCard.primaryFields && pass.storeCard.primaryFields.length > 0) {
-                primaryFields = pass.storeCard.primaryFields;
-            }
-            break;
-        }
-        case "boardingPass": {
-            if (pass.boardingPass && pass.boardingPass.primaryFields && pass.boardingPass.primaryFields.length > 0) {
-                primaryFields = pass.boardingPass.primaryFields;
-            }
-            break;
-        }
-        case "coupon": {
-            if (pass.coupon && pass.coupon.primaryFields && pass.coupon.primaryFields.length > 0) {
-                primaryFields = pass.coupon.primaryFields;
-            }
-            break;
-        }
-        case "eventTicket": {
-            if (pass.eventTicket && pass.eventTicket.primaryFields && pass.eventTicket.primaryFields.length > 0) {
-                primaryFields = pass.eventTicket.primaryFields;
-            }
-            break;
-        }
-        case "generic": {
-            if (pass.generic && pass.generic.primaryFields && pass.generic.primaryFields.length > 0) {
-                primaryFields = pass.generic.primaryFields;
-            }
-            break;
-        }
-    }
+    const passType: PassType = getPassType(pass);
+    const headerFields: PassField[] | undefined = getFields(pass, passType, 'headerFields');
+    const primaryFields: PassField[] | undefined = getFields(pass, passType, 'primaryFields');
+    const secondaryFields: PassField[] | undefined = getFields(pass, passType, 'secondaryFields');
+    const auxiliaryFields: PassField[] | undefined = getFields(pass, passType, 'auxiliaryFields');
+    const backFields: PassField[] | undefined = getFields(pass, passType, 'backFields');
 
     let barcode: Barcode;
     let barcodeSvg: string = '';
@@ -153,6 +104,18 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
             {show ?
                 <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
                     {primaryFields ? primaryFields.map((field) => (
+                        <>
+                            <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
+                            <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
+                        </>
+                    )) : null}
+                    {secondaryFields ? secondaryFields.map((field) => (
+                        <>
+                            <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
+                            <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
+                        </>
+                    )) : null}
+                    {auxiliaryFields ? auxiliaryFields.map((field) => (
                         <>
                             <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
                             <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
