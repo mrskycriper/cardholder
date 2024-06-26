@@ -85,6 +85,41 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
         }
     }
 
+    let primaryFields: PassField[] | undefined;
+
+    switch (passType) {
+        case "storeCard": {
+            if (pass.storeCard && pass.storeCard.primaryFields && pass.storeCard.primaryFields.length > 0) {
+                primaryFields = pass.storeCard.primaryFields;
+            }
+            break;
+        }
+        case "boardingPass": {
+            if (pass.boardingPass && pass.boardingPass.primaryFields && pass.boardingPass.primaryFields.length > 0) {
+                primaryFields = pass.boardingPass.primaryFields;
+            }
+            break;
+        }
+        case "coupon": {
+            if (pass.coupon && pass.coupon.primaryFields && pass.coupon.primaryFields.length > 0) {
+                primaryFields = pass.coupon.primaryFields;
+            }
+            break;
+        }
+        case "eventTicket": {
+            if (pass.eventTicket && pass.eventTicket.primaryFields && pass.eventTicket.primaryFields.length > 0) {
+                primaryFields = pass.eventTicket.primaryFields;
+            }
+            break;
+        }
+        case "generic": {
+            if (pass.generic && pass.generic.primaryFields && pass.generic.primaryFields.length > 0) {
+                primaryFields = pass.generic.primaryFields;
+            }
+            break;
+        }
+    }
+
     let barcode: Barcode;
     let barcodeSvg: string = '';
 
@@ -117,6 +152,12 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
             </BootstrapCard.Header>
             {show ?
                 <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
+                    {primaryFields ? primaryFields.map((field) => (
+                        <>
+                            <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
+                            <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
+                        </>
+                    )) : null}
                     {barcodeSvg !== '' ? <svg dangerouslySetInnerHTML={{ __html: barcodeSvg }} style={{ background: 'white', maxWidth: '100%' }} /> : null}
                 </BootstrapCard.Body>
                 : null}
