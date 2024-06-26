@@ -5,6 +5,8 @@ import { toSVG } from 'bwip-js';
 import Pass from '../../interfaces/Pass';
 import PassBundle from '../../interfaces/PassBundle';
 import Barcode from '../../interfaces/Barcode';
+import { PassFields } from "../../interfaces/PassFields";
+import PassField from "../../interfaces/PassField";
 
 function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'PKBarcodeFormatAztec' | 'PKBarcodeFormatCode128') {
     let result: string;
@@ -34,6 +36,55 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
     const handleToggle = () => setShow(!show);
     const pass: Pass = passBundle.objects.pass;
 
+    let passType: 'storeCard' | 'boardingPass' | 'coupon' | 'eventTicket' | 'generic'
+
+    if (pass.storeCard) {
+        passType = 'storeCard'
+    } else if (pass.boardingPass) {
+        passType = 'boardingPass'
+    } else if (pass.coupon) {
+        passType = 'coupon'
+    } else if (pass.eventTicket) {
+        passType = 'eventTicket'
+    } else {
+        passType = 'generic'
+    }
+
+    let headerFields: PassField[] | undefined;
+
+    switch (passType) {
+        case "storeCard": {
+            if (pass.storeCard && pass.storeCard.headerFields && pass.storeCard.headerFields.length > 0) {
+                headerFields = pass.storeCard.headerFields;
+            }
+            break;
+        }
+        case "boardingPass": {
+            if (pass.boardingPass && pass.boardingPass.headerFields && pass.boardingPass.headerFields.length > 0) {
+                headerFields = pass.boardingPass.headerFields;
+            }
+            break;
+        }
+        case "coupon": {
+            if (pass.coupon && pass.coupon.headerFields && pass.coupon.headerFields.length > 0) {
+                headerFields = pass.coupon.headerFields;
+            }
+            break;
+        }
+        case "eventTicket": {
+            if (pass.eventTicket && pass.eventTicket.headerFields && pass.eventTicket.headerFields.length > 0) {
+                headerFields = pass.eventTicket.headerFields;
+            }
+            break;
+        }
+        case "generic": {
+            if (pass.generic && pass.generic.headerFields && pass.generic.headerFields.length > 0) {
+                headerFields = pass.generic.headerFields;
+            }
+            break;
+        }
+    }
+
     let barcode: Barcode;
     let barcodeSvg: string = '';
 
@@ -57,6 +108,12 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
             <BootstrapCard.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
                 {pass.logoText ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
+                {headerFields ? headerFields.map((field) => (
+                    <>
+                        <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
+                        <BootstrapCard.Text>{field.value}</BootstrapCard.Text>
+                    </>
+                )) : null}
             </BootstrapCard.Header>
             {show ?
                 <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
