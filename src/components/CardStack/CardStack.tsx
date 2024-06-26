@@ -24,7 +24,7 @@ function CardStack() {
         <Stack gap={2} className='align-items-center py-2'>
             {
                 cards.map((passBundle) => (
-                    <Card key={passBundle.id} passBundle={passBundle} />
+                    <Card key={passBundle.id} passId={passBundle.id} passBundle={passBundle} />
                 ))
             }
         </Stack>

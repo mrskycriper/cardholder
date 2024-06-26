@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card as BootstrapCard, Button, ButtonGroup, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
@@ -59,7 +59,7 @@ function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): Pa
     }
 }
 
-function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
+function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }) {
     const [showFront, setShowFront] = useState(false);
     const [showBack, setShowBack] = useState(false);
     const handleExpandFront = () => {
@@ -70,6 +70,23 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
         setShowFront(false);
         setShowBack(!showBack);
     }
+    const shareWorker: Worker = useMemo(
+        () => new Worker(new URL("./shareWorker.ts", import.meta.url), { type: 'module' }),
+        []
+    );
+
+    const handleShare = async () => {
+        if (window.Worker) {
+            shareWorker.postMessage(passId);
+            shareWorker.onmessage = async (event: MessageEvent<File>) => {
+                await navigator.share({
+                    title: pass.description,
+                    files: [event.data]
+                });
+            };
+        }
+    }
+
     const pass: Pass = passBundle.objects.pass;
 
     const passType: PassType = getPassType(pass);
@@ -110,7 +127,7 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
                 )) : null}
             </BootstrapCard.Header>
             {showFront ?
-                <BootstrapCard.Body style={{}} id={`${key}_card_body`}>
+                <BootstrapCard.Body>
                     {primaryFields ? primaryFields.map((field) => (
                         <>
                             <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
@@ -144,6 +161,9 @@ function Card({ key, passBundle }: { key: string, passBundle: PassBundle }) {
                 : null}
             <BootstrapCard.Footer>
                 <ButtonGroup>
+                    <Button onClick={handleShare}>
+                        <i className={"ri-share-2-fill"} />
+                    </Button>
                     <Button onClick={handleExpandFront}>
                         {showFront ? <i className={"ri-contract-up-down-fill"} /> : <i className={"ri-expand-up-down-fill"} />}
                     </Button>
