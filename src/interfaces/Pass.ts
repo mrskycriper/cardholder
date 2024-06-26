@@ -1,5 +1,5 @@
 import Barcode from "./Barcode"
-import PassField from "./PassField"
+import {PassFields, BoardingPassFields } from "./PassFields"
 
 export default interface Pass {
     formatVersion: number,
@@ -7,13 +7,11 @@ export default interface Pass {
     logoText: string,
     organizationName: string,
     description: string,
-    storeCard: {
-        headerFields: PassField[],
-        primaryFields: PassField[],
-        secondaryFields: PassField[],
-        auxiliaryFields: PassField[],
-        backFields: PassField[],
-    },
+    storeCard?: PassFields,
+    generic?: PassFields,
+    boardingPass?: BoardingPassFields,
+    coupon?: PassFields,
+    eventTicket?: PassFields,
     barcodes?: Barcode[],
     barcode?: Barcode,
     labelColor: string,
