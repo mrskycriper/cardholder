@@ -29,7 +29,7 @@ self.onmessage = async (uuid: MessageEvent<string>) => {
 
     const zipFileData = await zip.generateAsync({type: 'arraybuffer'})
 
-    const pkpassFile = new File([zipFileData], `${uuid}.pkpass`, {
+    const pkpassFile = new File([zipFileData], `${uuid.data}.pkpass`, {
         type: "application/vnd.apple.pkpass",
       });
 

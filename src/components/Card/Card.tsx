@@ -80,7 +80,6 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
             shareWorker.postMessage(passId);
             shareWorker.onmessage = async (event: MessageEvent<File>) => {
                 await navigator.share({
-                    title: pass.description,
                     files: [event.data]
                 });
             };
