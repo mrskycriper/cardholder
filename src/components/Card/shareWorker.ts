@@ -2,10 +2,10 @@
 
 import JSZip from "jszip";
 
-self.onmessage = async (uuid: MessageEvent<String>) => {
+self.onmessage = async (uuid: MessageEvent<string>) => {
     const opfsRoot = await navigator.storage.getDirectory();
     const defaultDirectory = await opfsRoot.getDirectoryHandle("default");
-    const targetDirectory = await defaultDirectory.getDirectoryHandle(`${uuid}.pkpass`);
+    const targetDirectory = await defaultDirectory.getDirectoryHandle(uuid.data);
 
     let zip = new JSZip();
 
