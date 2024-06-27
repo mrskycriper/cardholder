@@ -3,12 +3,12 @@
 import JSZip from "jszip";
 
 self.onmessage = async (e: MessageEvent<File>) => {
-    //console.log(`Worker: got ${e.data.name}`)
     const opfsRoot = await navigator.storage.getDirectory();
     const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
         create: true,
     });
-    const unzippedDirectory = await defaultDirectory.getDirectoryHandle(e.data.name, {
+    const uuid = self.crypto.randomUUID();
+    const unzippedDirectory = await defaultDirectory.getDirectoryHandle(uuid, {
         create: true,
     });
 

@@ -1,13 +1,13 @@
 import { useMemo, useState, useEffect } from "react";
 import Stack from 'react-bootstrap/Stack';
-import BasicCard from '../Card/BasicCard'
+import Card from '../Card/Card'
 
 import PassBundle from '../../interfaces/PassBundle';
 
 function CardStack() {
     const [cards, setCards] = useState([] as PassBundle[]);
     const worker: Worker = useMemo(
-        () => new Worker(new URL("./worker.ts", import.meta.url), { type: 'module' }),
+        () => new Worker(new URL("./aggregateWorker.ts", import.meta.url), { type: 'module' }),
         []
     );
 
@@ -24,7 +24,7 @@ function CardStack() {
         <Stack gap={2} className='align-items-center py-2'>
             {
                 cards.map((passBundle) => (
-                    <BasicCard key={passBundle.id} passBundle={passBundle} />
+                    <Card key={passBundle.id} passId={passBundle.id} passBundle={passBundle} />
                 ))
             }
         </Stack>
