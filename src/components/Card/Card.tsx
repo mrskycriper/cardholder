@@ -5,7 +5,7 @@ import { toSVG } from 'bwip-js';
 import Pass, { PassType } from '../../interfaces/Pass';
 import PassBundle from '../../interfaces/PassBundle';
 import Barcode from '../../interfaces/Barcode';
-import { PassFieldType, PassFields } from "../../interfaces/PassFields";
+import { PassFieldType } from "../../interfaces/PassFields";
 import PassField from "../../interfaces/PassField";
 
 function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'PKBarcodeFormatAztec' | 'PKBarcodeFormatCode128') {
