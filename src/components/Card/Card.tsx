@@ -76,14 +76,12 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     );
 
     const handleShare = async () => {
-        if (window.Worker) {
-            shareWorker.postMessage(passId);
-            shareWorker.onmessage = async (event: MessageEvent<File>) => {
-                await navigator.share({
-                    files: [event.data]
-                });
-            };
-        }
+        shareWorker.postMessage(passId);
+        shareWorker.onmessage = async (event: MessageEvent<File>) => {
+            await navigator.share({
+                files: [event.data]
+            });
+        };
     }
 
     const pass: Pass = passBundle.objects.pass;

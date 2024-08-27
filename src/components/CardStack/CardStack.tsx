@@ -12,12 +12,10 @@ function CardStack() {
     );
 
     useEffect(() => {
-        if (window.Worker) {
-            worker.postMessage('get default');
-            worker.onmessage = async (e: MessageEvent<PassBundle[]>) => {
-                setCards(e.data);
-            };
-        }
+        worker.postMessage('get default');
+        worker.onmessage = async (e: MessageEvent<PassBundle[]>) => {
+            setCards(e.data);
+        };
     }, []);
 
     return (
