@@ -123,7 +123,7 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
         <BootstrapCard style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
             <BootstrapCard.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
-                {pass.logoText ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
+                {pass.logoText !== undefined ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
                 {headerFields ? headerFields.map((field) => (
                     <>
                         <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>
