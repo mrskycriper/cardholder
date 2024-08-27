@@ -2,7 +2,7 @@
 
 import PassBundle from '../../interfaces/PassBundle';
 
-self.onmessage = async (_e: MessageEvent<String>) => {
+self.onmessage = async () => {
     const opfsRoot = await navigator.storage.getDirectory();
     const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
         create: true,
