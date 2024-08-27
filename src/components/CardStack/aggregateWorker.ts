@@ -10,38 +10,39 @@ self.onmessage = async () => {
 
     const files: PassBundle[] = [];
 
-    for await (const [directoryName, directoryHandle] of defaultDirectory.entries()) {
-        // @ts-ignore
-        const passFileHandle: FileSystemFileHandle = await directoryHandle.getFileHandle('pass.json');
-        const passFile: File = await passFileHandle.getFile()
-        const passObject = JSON.parse(await passFile.text())
-        const passBundle: PassBundle = { id: directoryName, objects: { pass: passObject }, files: {} }
+    for await (const [entryName, entryHandle] of defaultDirectory.entries()) {
+        if (entryHandle.kind === 'directory') {
+            const directoryHandle: FileSystemDirectoryHandle = entryHandle as FileSystemDirectoryHandle;
+            const passFileHandle: FileSystemFileHandle = await directoryHandle.getFileHandle('pass.json');
+            const passFile: File = await passFileHandle.getFile()
+            const passObject = JSON.parse(await passFile.text())
+            const passBundle: PassBundle = { id: entryName, objects: { pass: passObject }, files: {} }
 
-        let logoFileHandle: FileSystemFileHandle | undefined = undefined;
-        try {
-            // @ts-ignore
-            logoFileHandle = await directoryHandle.getFileHandle('logo.png');
-        } catch (e) {
-            // not found, silent skip
-        }
-        try {
-            // @ts-ignore
-            logoFileHandle = await directoryHandle.getFileHandle('logo@2x.png');
-        } catch (e) {
-            // not found, silent skip
-        }
-        try {
-            // @ts-ignore
-            logoFileHandle = await directoryHandle.getFileHandle('logo@3x.png');
-        } catch (e) {
-            // not found, silent skip
-        }
-        if (logoFileHandle !== undefined) {
-            const logoFile: File = await logoFileHandle.getFile()
-            passBundle.files.logo = logoFile
+            let logoFileHandle: FileSystemFileHandle | undefined = undefined;
+            try {
+
+                logoFileHandle = await directoryHandle.getFileHandle('logo.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            try {
+                logoFileHandle = await directoryHandle.getFileHandle('logo@2x.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            try {
+                logoFileHandle = await directoryHandle.getFileHandle('logo@3x.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            if (logoFileHandle !== undefined) {
+                const logoFile: File = await logoFileHandle.getFile()
+                passBundle.files.logo = logoFile
+            }
+
+            files.push(passBundle)
         }
 
-        files.push(passBundle)
     }
 
     self.postMessage(files);
