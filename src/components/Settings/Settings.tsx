@@ -15,21 +15,17 @@ function Settings() {
     );
 
     useEffect(() => {
-        if (window.Worker) {
-            estimateWorker.postMessage('GET');
-            estimateWorker.onmessage = async (e: MessageEvent<StorageEstimate>) => {
-                setEstimate(e.data);
-            };
-        }
+        estimateWorker.postMessage('GET');
+        estimateWorker.onmessage = async (e: MessageEvent<StorageEstimate>) => {
+            setEstimate(e.data);
+        };
     }, []);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleCleanup = () => {
-        if (window.Worker) {
-            clenupWorker.postMessage("CLEAN")
-        }
+        clenupWorker.postMessage("CLEAN")
     };
 
     return (

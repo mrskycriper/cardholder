@@ -18,12 +18,10 @@ function ImportModal() {
         // Should never be null
         let inputElement: HTMLInputElement = document.getElementById("pkpass");
         if (inputElement && inputElement.files) {
-            if (window.Worker) {
-                importWorker.postMessage(inputElement.files[0]);
-                importWorker.onmessage = (_e: MessageEvent<string>) => {
-                    //console.log("Message posted from webworker: " + e.data);
-                };
-            }
+            importWorker.postMessage(inputElement.files[0]);
+            importWorker.onmessage = (_e: MessageEvent<string>) => {
+                //console.log("Message posted from webworker: " + e.data);
+            };
         }
         setShow(false)
     }
