@@ -99,11 +99,19 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     if (pass.barcodes) {
         if (pass.barcodes.length > 0) {
             barcode = pass.barcodes[0];
-            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+            if (barcode.altText !== undefined) {
+                barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+            } else {
+                barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
+            }
         }
     } else if (pass.barcode) {
         barcode = pass.barcode;
-        barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+        if (barcode.altText !== undefined) {
+            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+        } else {
+            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
+        }
     }
 
     let logoSrc: string = '';
