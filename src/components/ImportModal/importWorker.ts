@@ -18,8 +18,7 @@ self.onmessage = async (e: MessageEvent<File>) => {
                 const fileHandle = await unzippedDirectory.getFileHandle(zipEntry.name, {
                     create: true,
                 });
-                // @ts-ignore
-                // Thinks property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle' for some reason
+                // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
                 const accessHandle = await fileHandle.createSyncAccessHandle();
                 const fileData = await zipEntry.async('arraybuffer');
                 accessHandle.write(fileData)
