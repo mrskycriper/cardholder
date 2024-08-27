@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import JSZip from "jszip";
 
 self.onmessage = async (uuid: MessageEvent<string>) => {
