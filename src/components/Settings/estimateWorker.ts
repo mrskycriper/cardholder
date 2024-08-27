@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
-self.onmessage = async (_e: MessageEvent<String>) => {
+self.onmessage = async () => {
     const estimate = await navigator.storage.estimate()
     self.postMessage(estimate);
 };
