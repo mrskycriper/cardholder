@@ -48,9 +48,9 @@ function getPassType(pass: Pass): PassType {
 }
 
 function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): PassField[] | undefined {
-    let fieldsObject = pass[passType]
+    const fieldsObject = pass[passType]
     if (fieldsObject !== undefined) {
-        let fieldsArray = fieldsObject[fieldType]
+        const fieldsArray = fieldsObject[fieldType]
         if (fieldsArray !== undefined) {
             if (fieldsArray.length > 0) {
                 return fieldsArray
