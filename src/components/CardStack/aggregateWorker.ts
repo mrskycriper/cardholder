@@ -11,14 +11,11 @@ self.onmessage = async () => {
     const files: PassBundle[] = [];
 
     for await (const [directoryName, directoryHandle] of defaultDirectory.entries()) {
-        let passBundle: PassBundle
-
         // @ts-ignore
         const passFileHandle: FileSystemFileHandle = await directoryHandle.getFileHandle('pass.json');
         const passFile: File = await passFileHandle.getFile()
         const passObject = JSON.parse(await passFile.text())
-
-        passBundle = { id: directoryName, objects: { pass: passObject }, files: {} }
+        const passBundle: PassBundle = { id: directoryName, objects: { pass: passObject }, files: {} }
 
         let logoFileHandle: FileSystemFileHandle | undefined = undefined;
         try {
