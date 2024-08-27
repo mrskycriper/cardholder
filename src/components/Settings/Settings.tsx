@@ -42,8 +42,8 @@ function Settings() {
                     <Card>
                         <Card.Header>Хранилище</Card.Header>
                         <Card.Body>
-                            <ProgressBar now={estimate.quota && estimate.usage ? estimate.usage / estimate.quota : 0} />
-                            {`Занято ${estimate.usage ? (estimate.usage / 1024 / 1024).toFixed(2) : 0} Мб из ${estimate.quota ? (estimate.quota / 1024 / 1024).toFixed(2) : 0} Мб`}
+                            <ProgressBar now={estimate.quota !== undefined && estimate.usage !== undefined ? estimate.usage / estimate.quota : 0} />
+                            {`Занято ${estimate.usage !== undefined ? (estimate.usage / 1024 / 1024).toFixed(2) : 0} Мб из ${estimate.quota !== undefined ? (estimate.quota / 1024 / 1024).toFixed(2) : 0} Мб`}
                         </Card.Body>
                         <Card.Footer>
                             <Button variant="danger" onClick={handleCleanup}>

@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 function ImportModal() {
     const [show, setShow] = useState(false);
     const importWorker: Worker = useMemo(
-        () => new Worker(new URL("./importWorker.ts", import.meta.url), {type: 'module'}),
+        () => new Worker(new URL("./importWorker.ts", import.meta.url), { type: 'module' }),
         []
     );
 
@@ -14,13 +14,16 @@ function ImportModal() {
     const handleShow = () => setShow(true);
 
     const handleSave = async () => {
-        // @ts-ignore 
-        // Should never be null
-        let inputElement: HTMLInputElement = document.getElementById("pkpass");
-        if (inputElement && inputElement.files) {
-            importWorker.postMessage(inputElement.files[0]);
+        try  {
+            // Should never be null
+            const inputElement: HTMLInputElement = document.getElementById("pkpass") as HTMLInputElement;
+            if (inputElement.files) {
+                importWorker.postMessage(inputElement.files[0]);
+            }
+            setShow(false)
+        } catch (e) {
+            console.log('Impossible error: ' + e)
         }
-        setShow(false)
     }
 
     return (
