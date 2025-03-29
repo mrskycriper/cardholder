@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 function ImportModal() {
     const [show, setShow] = useState(false);
     const importWorker: Worker = useMemo(
-        () => new Worker(new URL("./importWorker.ts", import.meta.url), { type: 'module' }),
+        () => new Worker(new URL("./import-worker.ts", import.meta.url), { type: 'module' }),
         []
     );
 
@@ -33,8 +33,8 @@ function ImportModal() {
             </Button>
 
             <Modal show={show} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Импорт</Modal.Title>
+                <Modal.Header className="border-0" closeButton>
+                    <Modal.Title className="fw-bold">Импорт</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group className="mb-3">
@@ -42,7 +42,7 @@ function ImportModal() {
                         <Form.Control type="file" id='pkpass' /*accept='.pkpass,application/vnd.apple.pkpass'*/ />
                     </Form.Group>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="border-0">
                     <Button variant="secondary" onClick={handleClose}>
                         Закрыть
                     </Button>

@@ -71,7 +71,7 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
         setShowBack(!showBack);
     }
     const shareWorker: Worker = useMemo(
-        () => new Worker(new URL("./shareWorker.ts", import.meta.url), { type: 'module' }),
+        () => new Worker(new URL("./share-worker.ts", import.meta.url), { type: 'module' }),
         []
     );
 

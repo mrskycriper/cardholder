@@ -5,12 +5,12 @@ function Settings() {
     const [show, setShow] = useState(false);
     const [estimate, setEstimate] = useState<StorageEstimate>({ quota: 0, usage: 0 });
     const estimateWorker: Worker = useMemo(
-        () => new Worker(new URL("./estimateWorker.ts", import.meta.url), { type: 'module' }),
+        () => new Worker(new URL("./estimate-worker.ts", import.meta.url), { type: 'module' }),
         []
     );
 
     const clenupWorker: Worker = useMemo(
-        () => new Worker(new URL("./clenupWorker.ts", import.meta.url), { type: 'module' }),
+        () => new Worker(new URL("./clenup-worker.ts", import.meta.url), { type: 'module' }),
         []
     );
 
