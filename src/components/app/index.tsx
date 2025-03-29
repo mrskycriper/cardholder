@@ -1,5 +1,5 @@
-import Header from '../Header/Header';
-import CardStack from '../CardStack/CardStack';
+import Header from '../header';
+import CardStack from '../card-stack';
 import './styles.module.css';
 
 function App() {

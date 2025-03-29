@@ -1,4 +1,4 @@
-import Pass from "./Pass";
+import Pass from "./pass";
 
 export default interface PassBundle {
     id: string,

@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import ImportModal from '../ImportModal/ImportModal'
-import Settings from '../Settings/Settings';
+import ImportModal from '../import-modal'
+import Settings from '../Settings';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function Header() {

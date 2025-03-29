@@ -1,4 +1,4 @@
-import PassBundle from '../../interfaces/PassBundle';
+import PassBundle from '../../interfaces/pass-bundle';
 
 self.onmessage = async () => {
     const opfsRoot = await navigator.storage.getDirectory();

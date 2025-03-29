@@ -1,5 +1,5 @@
-import Barcode from "./Barcode"
-import {PassFields, BoardingPassFields } from "./PassFields"
+import Barcode from "./barcode"
+import {PassFields, BoardingPassFields } from "./pass-fields"
 
 export default interface Pass {
     formatVersion: number,

@@ -1,8 +1,8 @@
 import { useMemo, useState, useEffect } from "react";
 import Stack from 'react-bootstrap/Stack';
-import Card from '../Card/Card'
+import Card from '../card'
 
-import PassBundle from '../../interfaces/PassBundle';
+import PassBundle from '../../interfaces/pass-bundle';
 
 function CardStack() {
     const [cards, setCards] = useState([] as PassBundle[]);

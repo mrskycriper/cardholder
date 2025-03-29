@@ -2,11 +2,11 @@ import { useState, useMemo } from "react";
 import { Card as BootstrapCard, Button, ButtonGroup, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
 
-import Pass, { PassType } from '../../interfaces/Pass';
-import PassBundle from '../../interfaces/PassBundle';
-import Barcode from '../../interfaces/Barcode';
-import { PassFieldType } from "../../interfaces/PassFields";
-import PassField from "../../interfaces/PassField";
+import Pass, { PassType } from '../../interfaces/pass';
+import PassBundle from '../../interfaces/pass-bundle';
+import Barcode from '../../interfaces/barcode';
+import { PassFieldType } from "../../interfaces/pass-fields";
+import PassField from "../../interfaces/pass-field";
 
 function formatToBcid(format: 'PKBarcodeFormatQR' | 'PKBarcodeFormatPDF417' | 'PKBarcodeFormatAztec' | 'PKBarcodeFormatCode128') {
     let result: string;

@@ -1,4 +1,4 @@
-import PassField from "./PassField";
+import PassField from "./pass-field";
 
 export interface PassFields {
     headerFields?: PassField[],
