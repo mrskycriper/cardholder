@@ -48,9 +48,9 @@ function getPassType(pass: Pass): PassType {
 }
 
 function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): PassField[] | undefined {
-    let fieldsObject = pass[passType]
+    const fieldsObject = pass[passType]
     if (fieldsObject !== undefined) {
-        let fieldsArray = fieldsObject[fieldType]
+        const fieldsArray = fieldsObject[fieldType]
         if (fieldsArray !== undefined) {
             if (fieldsArray.length > 0) {
                 return fieldsArray
@@ -76,14 +76,12 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     );
 
     const handleShare = async () => {
-        if (window.Worker) {
-            shareWorker.postMessage(passId);
-            shareWorker.onmessage = async (event: MessageEvent<File>) => {
-                await navigator.share({
-                    files: [event.data]
-                });
-            };
-        }
+        shareWorker.postMessage(passId);
+        shareWorker.onmessage = async (event: MessageEvent<File>) => {
+            await navigator.share({
+                files: [event.data]
+            });
+        };
     }
 
     const pass: Pass = passBundle.objects.pass;
@@ -101,11 +99,19 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     if (pass.barcodes) {
         if (pass.barcodes.length > 0) {
             barcode = pass.barcodes[0];
-            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+            if (barcode.altText !== undefined) {
+                barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+            } else {
+                barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
+            }
         }
     } else if (pass.barcode) {
         barcode = pass.barcode;
-        barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+        if (barcode.altText !== undefined) {
+            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message, alttext: barcode.altText });
+        } else {
+            barcodeSvg = toSVG({ bcid: formatToBcid(barcode.format), text: barcode.message });
+        }
     }
 
     let logoSrc: string = '';
@@ -117,7 +123,7 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
         <BootstrapCard style={{ width: '20rem', backgroundColor: pass.backgroundColor, color: pass.foregroundColor }}>
             <BootstrapCard.Header>
                 {passBundle.files.logo ? <Image src={logoSrc} style={{ maxWidth: '50%' }} /> : null}
-                {pass.logoText ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
+                {pass.logoText !== undefined ? <BootstrapCard.Title>{pass.logoText}</BootstrapCard.Title> : null}
                 {headerFields ? headerFields.map((field) => (
                     <>
                         <BootstrapCard.Subtitle style={{ color: pass.labelColor }}>{field.label}</BootstrapCard.Subtitle>

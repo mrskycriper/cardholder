@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import JSZip from "jszip";
 
 self.onmessage = async (uuid: MessageEvent<string>) => {
@@ -11,16 +9,13 @@ self.onmessage = async (uuid: MessageEvent<string>) => {
 
     for await (const [rootName, rootHandle] of targetDirectory.entries()) {
         if (rootHandle.kind === 'file') {
-            // @ts-ignore
-            const fileHandle: FileSystemFileHandle = rootHandle;
+            const fileHandle: FileSystemFileHandle = rootHandle as FileSystemFileHandle;
             const file: File = await fileHandle.getFile()
             zip = zip.file(rootName, file)
         } else if (rootHandle.kind === 'directory') {
-            // @ts-ignore
-            const directoryHandle: FileSystemDirectoryHandle = rootHandle;
+            const directoryHandle: FileSystemDirectoryHandle = rootHandle as FileSystemDirectoryHandle;
             for await (const [subfolderName, subfolderHandle] of directoryHandle.entries()) {
-                // @ts-ignore
-                const fileHandle: FileSystemFileHandle = subfolderHandle;
+                const fileHandle: FileSystemFileHandle = subfolderHandle as FileSystemFileHandle;
                 const file: File = await fileHandle.getFile()
                 zip = zip.file(`${rootName}/${subfolderName}`, file)
             }
