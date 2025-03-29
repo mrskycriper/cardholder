@@ -6,9 +6,9 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function Header() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg">
             <Container>
-                <Navbar.Brand>Кошелёк</Navbar.Brand>
+                <Navbar.Brand className="fw-bold">Кошелёк</Navbar.Brand>
                 <ButtonGroup>
                     <ImportModal />
                     <Settings />
