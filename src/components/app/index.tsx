@@ -1,6 +1,6 @@
-import './App.css';
-import Header from './components/Header/Header';
-import CardStack from './components/CardStack/CardStack';
+import Header from '../Header/Header';
+import CardStack from '../CardStack/CardStack';
+import './styles.module.css';
 
 function App() {
     return (
