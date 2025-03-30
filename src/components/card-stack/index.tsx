@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Stack from 'react-bootstrap/Stack';
 import Card from '../card'
+import PreviewCard from "../preview-card";
 
 import PassBundle from '../../interfaces/pass-bundle';
 
@@ -18,11 +19,23 @@ function CardStack() {
         };
     }, []);
 
+    // return (
+    //     <Stack gap={2} className='align-items-center py-2'>
+    //         {
+    //             cards.map((passBundle) => (
+    //                 <Card key={passBundle.id} passId={passBundle.id} passBundle={passBundle} />
+    //             ))
+    //         }
+    //     </Stack>
+    // );
+
     return (
-        <Stack gap={2} className='align-items-center py-2'>
+        <Stack gap={2} className='align-items-center py-2 container-sm' style={{
+            maxWidth:"540px"
+          }}>
             {
                 cards.map((passBundle) => (
-                    <Card key={passBundle.id} passId={passBundle.id} passBundle={passBundle} />
+                    <PreviewCard key={passBundle.id} passBundle={passBundle} />
                 ))
             }
         </Stack>
