@@ -6,8 +6,10 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function Header() {
     return (
-        <Navbar expand="lg">
-            <Container>
+        <Navbar>
+            <Container className="d-flex justify-content-between" fluid="sm" style={{
+            maxWidth:"540px"
+          }}>
                 <Navbar.Brand className="fw-bold">Кошелёк</Navbar.Brand>
                 <ButtonGroup>
                     <ImportModal />
