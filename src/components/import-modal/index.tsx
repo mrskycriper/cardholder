@@ -37,15 +37,9 @@ function ImportModal() {
                     <Modal.Title className="fw-bold">Импорт</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Выберите файл .pkpass</Form.Label>
-                        <Form.Control type="file" id='pkpass' /*accept='.pkpass,application/vnd.apple.pkpass'*/ />
-                    </Form.Group>
+                    <Form.Control type="file" id='pkpass' accept='.pkpass,application/vnd.apple.pkpass' />
                 </Modal.Body>
                 <Modal.Footer className="border-0">
-                    <Button variant="secondary" onClick={handleClose}>
-                        Закрыть
-                    </Button>
                     <Button variant="primary" onClick={handleSave}>
                         Сохранить
                     </Button>
