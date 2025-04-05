@@ -1,4 +1,4 @@
-import PassBundle from '../../interfaces/pass-bundle';
+import { PassBundleShort } from '../../interfaces/pass';
 
 self.onmessage = async () => {
     const opfsRoot = await navigator.storage.getDirectory();
@@ -6,7 +6,7 @@ self.onmessage = async () => {
         create: true,
     });
 
-    const files: PassBundle[] = [];
+    const files: PassBundleShort[] = [];
 
     for await (const [entryName, entryHandle] of defaultDirectory.entries()) {
         if (entryHandle.kind === 'directory') {
@@ -14,7 +14,7 @@ self.onmessage = async () => {
             const passFileHandle: FileSystemFileHandle = await directoryHandle.getFileHandle('pass.json');
             const passFile: File = await passFileHandle.getFile()
             const passObject = JSON.parse(await passFile.text())
-            const passBundle: PassBundle = { id: entryName, objects: { pass: passObject }, files: {} }
+            const passBundle: PassBundleShort = { id: entryName, objects: { pass: passObject }, files: {} }
 
             let logoFileHandle: FileSystemFileHandle | undefined = undefined;
             try {

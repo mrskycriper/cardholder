@@ -1,6 +1,9 @@
 import { useState, useMemo } from "react";
 import { Card as BootstrapCard, Button, ButtonGroup, Image } from 'react-bootstrap';
 import { toSVG } from 'bwip-js';
+import { Barcode } from '../../interfaces/barcode';
+import { PassField, PassFieldType } from "../../interfaces/pass-fields";
+import { PassType, Pass, PassBundleShort } from '../../interfaces/pass';
 
 import Pass, { PassType } from '../../interfaces/pass';
 import PassBundle from '../../interfaces/pass-bundle';
@@ -87,11 +90,11 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     const pass: Pass = passBundle.objects.pass;
 
     const passType: PassType = getPassType(pass);
-    const headerFields: PassField[] | undefined = getFields(pass, passType, 'headerFields');
-    const primaryFields: PassField[] | undefined = getFields(pass, passType, 'primaryFields');
-    const secondaryFields: PassField[] | undefined = getFields(pass, passType, 'secondaryFields');
-    const auxiliaryFields: PassField[] | undefined = getFields(pass, passType, 'auxiliaryFields');
-    const backFields: PassField[] | undefined = getFields(pass, passType, 'backFields');
+    const headerFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Header);
+    const primaryFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Primary);
+    const secondaryFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Secondary);
+    const auxiliaryFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Auxiliary);
+    const backFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Back);
 
     let barcode: Barcode;
     let barcodeSvg: string = '';

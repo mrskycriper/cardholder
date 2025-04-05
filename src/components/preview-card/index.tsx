@@ -1,50 +1,15 @@
 import { Card as BootstrapCard, Image } from "react-bootstrap";
+import { PassField, PassFieldType } from "../../interfaces/pass-fields";
+import { Pass, PassType, PassBundleShort } from "../../interfaces/pass";
 
-import Pass, { PassType } from "../../interfaces/pass";
-import PassBundle from "../../interfaces/pass-bundle";
-import { PassFieldType } from "../../interfaces/pass-fields";
-import PassField from "../../interfaces/pass-field";
-
-function getPassType(pass: Pass): PassType {
-  let passType: PassType;
-  if (pass.storeCard) {
-    passType = "storeCard";
-  } else if (pass.boardingPass) {
-    passType = "boardingPass";
-  } else if (pass.coupon) {
-    passType = "coupon";
-  } else if (pass.eventTicket) {
-    passType = "eventTicket";
-  } else {
-    passType = "generic";
-  }
-  return passType;
-}
-
-function getFields(
-  pass: Pass,
-  passType: PassType,
-  fieldType: PassFieldType
-): PassField[] | undefined {
-  const fieldsObject = pass[passType];
-  if (fieldsObject !== undefined) {
-    const fieldsArray = fieldsObject[fieldType];
-    if (fieldsArray !== undefined) {
-      if (fieldsArray.length > 0) {
-        return fieldsArray;
-      }
-    }
-  }
-}
-
-function PreviewCard({ passBundle }: { passBundle: PassBundle }) {
+function PreviewCard({ passBundle }: { passBundle: PassBundleShort }) {
   const pass: Pass = passBundle.objects.pass;
 
   const passType: PassType = getPassType(pass);
   const headerFields: PassField[] | undefined = getFields(
     pass,
     passType,
-    "headerFields"
+    PassFieldType.Header
   );
 
   let logoSrc = "";

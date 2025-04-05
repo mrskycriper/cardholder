@@ -1,5 +1,5 @@
 import { createSlice, configureStore, createAction } from '@reduxjs/toolkit';
-import PassBundleShort from '../interfaces/pass-bundle';
+import { PassBundleShort } from "../interfaces/pass";
 
 export const Actions = {
   SET_CARDS: 'cards/set',

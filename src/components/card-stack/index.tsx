@@ -2,8 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import Stack from 'react-bootstrap/Stack';
 import Card from '../card'
 import PreviewCard from "../preview-card";
-
-import PassBundle from '../../interfaces/pass-bundle';
+import { PassBundleShort } from "../../interfaces/pass";
 
 function CardStack() {
     const [cards, setCards] = useState([] as PassBundle[]);
