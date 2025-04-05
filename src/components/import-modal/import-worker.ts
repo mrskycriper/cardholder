@@ -29,4 +29,4 @@ self.onmessage = async (e: MessageEvent<File>) => {
     self.postMessage(`Saved ${e.data.name}`);
 };
 
-export { };
+export {};

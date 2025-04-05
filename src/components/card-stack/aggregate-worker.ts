@@ -18,7 +18,6 @@ self.onmessage = async () => {
 
             let logoFileHandle: FileSystemFileHandle | undefined = undefined;
             try {
-
                 logoFileHandle = await directoryHandle.getFileHandle('logo.png');
             } catch (e) {
                 // not found, silent skip

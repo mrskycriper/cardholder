@@ -1,10 +1,10 @@
-import { createSlice, configureStore, createAction } from '@reduxjs/toolkit';
+import { createSlice, configureStore, createAction } from "@reduxjs/toolkit";
 import { PassBundleShort } from "../interfaces/pass";
 
 export const Actions = {
-  SET_CARDS: 'cards/set',
-  ADD_CARD: 'card/add',
-  REMOVE_CARD: 'card/remove',
+  SET_CARDS: "cards/set",
+  ADD_CARD: "card/add",
+  REMOVE_CARD: "card/remove",
 };
 
 export const setCards = createAction<PassBundleShort[]>(Actions.SET_CARDS);
@@ -20,7 +20,7 @@ const initialState: GlobalState = {
 };
 
 const rootSlice = createSlice({
-  name: 'global',
+  name: "global",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -28,12 +28,12 @@ const rootSlice = createSlice({
       .addCase(setCards, (state, action) => {
         state.cards = action.payload;
       })
-       .addCase(addCard, (state, action) => {
-         state.cards = [...state.cards, action.payload];
+      .addCase(addCard, (state, action) => {
+        state.cards = [...state.cards, action.payload];
       });
-      // .addCase(removeCard, (state, action) => {
-      //   state.error = action.payload;
-      // });
+    // .addCase(removeCard, (state, action) => {
+    //   state.error = action.payload;
+    // });
   },
 });
 

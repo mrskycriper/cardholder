@@ -62,7 +62,7 @@ function getFields(pass: Pass, passType: PassType, fieldType: PassFieldType): Pa
     }
 }
 
-function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }) {
+function Card({ passId, passBundle }: { passId: string, passBundle: PassBundleShort }) {
     const [showFront, setShowFront] = useState(false);
     const [showBack, setShowBack] = useState(false);
     const handleExpandFront = () => {
@@ -97,7 +97,7 @@ function Card({ passId, passBundle }: { passId: string, passBundle: PassBundle }
     const backFields: PassField[] | undefined = getFields(pass, passType, PassFieldType.Back);
 
     let barcode: Barcode;
-    let barcodeSvg: string = '';
+    let barcodeSvg = '';
 
     if (pass.barcodes) {
         if (pass.barcodes.length > 0) {

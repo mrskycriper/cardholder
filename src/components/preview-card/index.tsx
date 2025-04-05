@@ -4,7 +4,6 @@ import { Pass, PassType, PassBundleShort } from "../../interfaces/pass";
 
 function PreviewCard({ passBundle }: { passBundle: PassBundleShort }) {
   const pass: Pass = passBundle.objects.pass;
-
   const passType: PassType = getPassType(pass);
   const headerFields: PassField[] | undefined = getFields(
     pass,
