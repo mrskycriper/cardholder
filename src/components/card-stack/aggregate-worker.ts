@@ -34,7 +34,28 @@ self.onmessage = async () => {
             }
             if (logoFileHandle !== undefined) {
                 const logoFile: File = await logoFileHandle.getFile()
-                passBundle.files.logo = logoFile
+                passBundle.files.logo = URL.createObjectURL(logoFile);
+            }
+
+            let iconFileHandle: FileSystemFileHandle | undefined = undefined;
+            try {
+                iconFileHandle = await directoryHandle.getFileHandle('icon.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            try {
+                iconFileHandle = await directoryHandle.getFileHandle('icon@2x.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            try {
+                iconFileHandle = await directoryHandle.getFileHandle('icon@3x.png');
+            } catch (e) {
+                // not found, silent skip
+            }
+            if (iconFileHandle !== undefined) {
+                const iconFile: File = await iconFileHandle.getFile()
+                passBundle.files.icon = URL.createObjectURL(iconFile);
             }
 
             files.push(passBundle)

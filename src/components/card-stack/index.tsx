@@ -1,44 +1,44 @@
-import { useMemo, useState, useEffect } from "react";
-import Stack from 'react-bootstrap/Stack';
-import Card from '../card'
+import { useEffect, useMemo } from "react";
+import Stack from "react-bootstrap/Stack";
 import PreviewCard from "../preview-card";
 import { PassBundleShort } from "../../interfaces/pass";
+import { setCards } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { WORKER_GET } from "../../constants/workers";
 
 function CardStack() {
-    const [cards, setCards] = useState([] as PassBundle[]);
-    const worker: Worker = useMemo(
-        () => new Worker(new URL("./aggregate-worker.ts", import.meta.url), { type: 'module' }),
-        []
-    );
+  const dispatch = useAppDispatch();
+  const cards = useAppSelector((state) => state.cards);
 
-    useEffect(() => {
-        worker.postMessage('get default');
-        worker.onmessage = async (e: MessageEvent<PassBundle[]>) => {
-            setCards(e.data);
-        };
-    }, []);
+  const aggregateWorker: Worker = useMemo(
+    () =>
+      new Worker(new URL("./aggregate-worker.ts", import.meta.url), {
+        type: "module",
+      }),
+    []
+  );
 
-    // return (
-    //     <Stack gap={2} className='align-items-center py-2'>
-    //         {
-    //             cards.map((passBundle) => (
-    //                 <Card key={passBundle.id} passId={passBundle.id} passBundle={passBundle} />
-    //             ))
-    //         }
-    //     </Stack>
-    // );
+  aggregateWorker.onmessage = async (e: MessageEvent<PassBundleShort[]>) => {
+    dispatch(setCards(e.data));
+  };
 
-    return (
-        <Stack gap={2} className='align-items-center py-2 container-sm' style={{
-            maxWidth:"540px"
-          }}>
-            {
-                cards.map((passBundle) => (
-                    <PreviewCard key={passBundle.id} passBundle={passBundle} />
-                ))
-            }
-        </Stack>
-    );
+  useEffect(() => {
+    aggregateWorker.postMessage(WORKER_GET);
+  }, []);
+
+  return (
+    <Stack
+      gap={2}
+      className="align-items-center py-2 container-sm"
+      style={{
+        maxWidth: "540px",
+      }}
+    >
+      {cards.map((passBundle) => (
+        <PreviewCard key={passBundle.id} passBundle={passBundle} />
+      ))}
+    </Stack>
+  );
 }
 
 export default CardStack;
