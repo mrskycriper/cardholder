@@ -1,11 +1,12 @@
 import JSZip from "jszip";
 import { PassBundleShort } from "../../interfaces/pass";
+import { DEFAULT_FOLDER } from "../../constants/files";
 
 self.onmessage = async (e: MessageEvent<File>) => {
   const rawZipData = await e.data.arrayBuffer();
 
   const opfsRoot = await navigator.storage.getDirectory();
-  const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
+  const defaultDirectory = await opfsRoot.getDirectoryHandle(DEFAULT_FOLDER, {
     create: true,
   });
   const uuid = self.crypto.randomUUID();

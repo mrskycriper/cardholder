@@ -1,8 +1,9 @@
+import { DEFAULT_FOLDER } from "../../constants/files";
 import { PassBundleShort } from "../../interfaces/pass";
 
 self.onmessage = async () => {
   const opfsRoot = await navigator.storage.getDirectory();
-  const defaultDirectory = await opfsRoot.getDirectoryHandle("default", {
+  const defaultDirectory = await opfsRoot.getDirectoryHandle(DEFAULT_FOLDER, {
     create: true,
   });
 
