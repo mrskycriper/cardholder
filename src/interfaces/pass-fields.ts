@@ -29,11 +29,11 @@ export interface PassField {
 }
 
 export enum PassFieldType {
-    Header = "headerFields",
-    Primary = "primaryFields",
-    Secondary = "secondaryFields",
-    Auxiliary = "auxiliaryFields",
-    Back = "backFields"
+  Header = "headerFields",
+  Primary = "primaryFields",
+  Secondary = "secondaryFields",
+  Auxiliary = "auxiliaryFields",
+  Back = "backFields",
 }
 
 export interface PassFields {
