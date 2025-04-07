@@ -1,9 +1,9 @@
 import JSZip from "jszip";
 import { PassBundleShort } from "../../interfaces/pass";
-import { DEFAULT_FOLDER } from "../../constants/files";
+import { DEFAULT_FOLDER, IMAGE_FILES } from "../../constants/files";
 
 self.onmessage = async (e: MessageEvent<File>) => {
-  const rawZipData = await e.data.arrayBuffer();
+  const rawPkpassData = await e.data.arrayBuffer();
 
   const opfsRoot = await navigator.storage.getDirectory();
   const defaultDirectory = await opfsRoot.getDirectoryHandle(DEFAULT_FOLDER, {
@@ -14,10 +14,20 @@ self.onmessage = async (e: MessageEvent<File>) => {
   const unzippedDirectory = await defaultDirectory.getDirectoryHandle(uuid, {
     create: true,
   });
+  const pkpassFileHandle = await unzippedDirectory.getFileHandle(
+    uuid + ".pkpass",
+    {
+      create: true,
+    }
+  );
+  // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
+  const pkpassAccessHandle = await pkpassFileHandle.createSyncAccessHandle();
+  pkpassAccessHandle.write(rawPkpassData);
+  pkpassAccessHandle.close();
 
   const entries: JSZip.JSZipObject[] = [];
   const zip = new JSZip();
-  await zip.loadAsync(rawZipData);
+  await zip.loadAsync(rawPkpassData);
   zip.forEach(function (_relativePath, zipEntry) {
     entries.push(zipEntry);
   });
@@ -43,46 +53,34 @@ self.onmessage = async (e: MessageEvent<File>) => {
     files: {},
   };
 
-  let logoFileHandle: FileSystemFileHandle | undefined = undefined;
-  try {
-    logoFileHandle = await unzippedDirectory.getFileHandle("logo.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  try {
-    logoFileHandle = await unzippedDirectory.getFileHandle("logo@2x.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  try {
-    logoFileHandle = await unzippedDirectory.getFileHandle("logo@3x.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  if (logoFileHandle !== undefined) {
-    const logoFile: File = await logoFileHandle.getFile();
-    passBundle.files.logo = URL.createObjectURL(logoFile);
-  }
-
-  let iconFileHandle: FileSystemFileHandle | undefined = undefined;
-  try {
-    iconFileHandle = await unzippedDirectory.getFileHandle("icon.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  try {
-    iconFileHandle = await unzippedDirectory.getFileHandle("icon@2x.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  try {
-    iconFileHandle = await unzippedDirectory.getFileHandle("icon@3x.png");
-  } catch (e) {
-    // not found, silent skip
-  }
-  if (iconFileHandle !== undefined) {
-    const iconFile: File = await iconFileHandle.getFile();
-    passBundle.files.icon = URL.createObjectURL(iconFile);
+  for (const key of Object.keys(IMAGE_FILES)) {
+    let imageFileHandle: FileSystemFileHandle | undefined = undefined;
+    try {
+      imageFileHandle = await unzippedDirectory.getFileHandle(
+        IMAGE_FILES[key]()
+      );
+    } catch (e) {
+      // not found, silent skip
+    }
+    try {
+      imageFileHandle = await unzippedDirectory.getFileHandle(
+        IMAGE_FILES[key]("@2x")
+      );
+    } catch (e) {
+      // not found, silent skip
+    }
+    try {
+      imageFileHandle = await unzippedDirectory.getFileHandle(
+        IMAGE_FILES[key]("@3x")
+      );
+    } catch (e) {
+      // not found, silent skip
+    }
+    if (imageFileHandle !== undefined) {
+      const imageFile: File = await imageFileHandle.getFile();
+      // @ts-ignore
+      passBundle.files[key] = URL.createObjectURL(imageFile);
+    }
   }
 
   self.postMessage(passBundle);

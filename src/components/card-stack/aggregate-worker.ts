@@ -1,4 +1,4 @@
-import { DEFAULT_FOLDER } from "../../constants/files";
+import { DEFAULT_FOLDER, IMAGE_FILES } from "../../constants/files";
 import { PassBundleShort } from "../../interfaces/pass";
 
 self.onmessage = async () => {
@@ -7,69 +7,55 @@ self.onmessage = async () => {
     create: true,
   });
 
-  const files: PassBundleShort[] = [];
+  const passes: PassBundleShort[] = [];
 
   for await (const [entryName, entryHandle] of defaultDirectory.entries()) {
     if (entryHandle.kind === "directory") {
-      const directoryHandle: FileSystemDirectoryHandle =
-        entryHandle as FileSystemDirectoryHandle;
-      const passFileHandle: FileSystemFileHandle =
-        await directoryHandle.getFileHandle("pass.json");
-      const passFile: File = await passFileHandle.getFile();
-      const passObject = JSON.parse(await passFile.text());
-      const passBundle: PassBundleShort = {
-        id: entryName,
-        objects: { pass: passObject },
-        files: {},
-      };
+      try {
+        const directoryHandle: FileSystemDirectoryHandle =
+          entryHandle as FileSystemDirectoryHandle;
+        const passFileHandle: FileSystemFileHandle =
+          await directoryHandle.getFileHandle("pass.json");
+        const passFile: File = await passFileHandle.getFile();
+        const passObject = JSON.parse(await passFile.text());
+        const passBundle: PassBundleShort = {
+          id: entryName,
+          objects: { pass: passObject },
+          files: {},
+        };
 
-      let logoFileHandle: FileSystemFileHandle | undefined = undefined;
-      try {
-        logoFileHandle = await directoryHandle.getFileHandle("logo.png");
+        for (const key of Object.keys(IMAGE_FILES)) {
+          let imageFileHandle: FileSystemFileHandle | undefined = undefined;
+          try {
+            imageFileHandle = await directoryHandle.getFileHandle(IMAGE_FILES[key]());
+          } catch (e) {
+            // not found, silent skip
+          }
+          try {
+            imageFileHandle = await directoryHandle.getFileHandle(IMAGE_FILES[key]("@2x"));
+          } catch (e) {
+            // not found, silent skip
+          }
+          try {
+            imageFileHandle = await directoryHandle.getFileHandle(IMAGE_FILES[key]("@3x"));
+          } catch (e) {
+            // not found, silent skip
+          }
+          if (imageFileHandle !== undefined) {
+            const imageFile: File = await imageFileHandle.getFile();
+            // @ts-ignore
+            passBundle.files[key] = URL.createObjectURL(imageFile);
+          }
+        }
+        
+        passes.push(passBundle);
       } catch (e) {
-        // not found, silent skip
+        console.log(e);
       }
-      try {
-        logoFileHandle = await directoryHandle.getFileHandle("logo@2x.png");
-      } catch (e) {
-        // not found, silent skip
-      }
-      try {
-        logoFileHandle = await directoryHandle.getFileHandle("logo@3x.png");
-      } catch (e) {
-        // not found, silent skip
-      }
-      if (logoFileHandle !== undefined) {
-        const logoFile: File = await logoFileHandle.getFile();
-        passBundle.files.logo = URL.createObjectURL(logoFile);
-      }
-
-      let iconFileHandle: FileSystemFileHandle | undefined = undefined;
-      try {
-        iconFileHandle = await directoryHandle.getFileHandle("icon.png");
-      } catch (e) {
-        // not found, silent skip
-      }
-      try {
-        iconFileHandle = await directoryHandle.getFileHandle("icon@2x.png");
-      } catch (e) {
-        // not found, silent skip
-      }
-      try {
-        iconFileHandle = await directoryHandle.getFileHandle("icon@3x.png");
-      } catch (e) {
-        // not found, silent skip
-      }
-      if (iconFileHandle !== undefined) {
-        const iconFile: File = await iconFileHandle.getFile();
-        passBundle.files.icon = URL.createObjectURL(iconFile);
-      }
-
-      files.push(passBundle);
     }
   }
 
-  self.postMessage(files);
+  self.postMessage(passes);
 };
 
 export {};
