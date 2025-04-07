@@ -9,7 +9,7 @@ export const Actions = {
 
 export const setCards = createAction<PassBundleShort[]>(Actions.SET_CARDS);
 export const addCard = createAction<PassBundleShort>(Actions.ADD_CARD);
-export const removeCard = createAction<PassBundleShort>(Actions.REMOVE_CARD);
+export const removeCard = createAction<string>(Actions.REMOVE_CARD);
 
 export interface GlobalState {
   cards: PassBundleShort[];
@@ -30,10 +30,10 @@ const rootSlice = createSlice({
       })
       .addCase(addCard, (state, action) => {
         state.cards = [...state.cards, action.payload];
-      });
-    // .addCase(removeCard, (state, action) => {
-    //   state.error = action.payload;
-    // });
+      })
+    .addCase(removeCard, (state, action) => {
+      state.cards = state.cards.filter((card) => card.id !== action.payload)
+    });
   },
 });
 

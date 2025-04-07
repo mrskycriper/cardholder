@@ -98,7 +98,7 @@ function PreviewCard({ passBundle }: PreviewCardProps) {
           {!showCardBack ? (
             <FrontSide passBundle={passBundle} />
           ) : (
-            <BackSide passBundle={passBundle} />
+            <BackSide passBundle={passBundle} onCardClose={handleCardClose}/>
           )}
         </Modal.Body>
       </Modal>
