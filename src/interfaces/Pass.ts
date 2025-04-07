@@ -1,5 +1,5 @@
 import { Barcode } from "./barcode";
-import { PassFields, BoardingPassFields } from "./pass-fields";
+import { PassFields, BoardingPassFields, PassField } from "./pass-fields";
 
 export enum PassType {
   Store = "storeCard",
@@ -25,6 +25,7 @@ export interface Pass {
   labelColor: string;
   foregroundColor: string;
   backgroundColor: string;
+  backFields?: PassField[];
 }
 
 export interface PassBundleShort {
@@ -35,5 +36,9 @@ export interface PassBundleShort {
   files: {
     icon?: string;
     logo?: string;
+    strip?: string;
+    background?: string;
+    thumbnail?: string;
+    footer?: string;
   };
 }
