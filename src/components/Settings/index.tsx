@@ -15,14 +15,6 @@ function Settings() {
     []
   );
 
-  const clenupWorker: Worker = useMemo(
-    () =>
-      new Worker(new URL("./clenup-worker.ts", import.meta.url), {
-        type: "module",
-      }),
-    []
-  );
-
   useEffect(() => {
     estimateWorker.postMessage("GET");
     estimateWorker.onmessage = async (e: MessageEvent<StorageEstimate>) => {
@@ -33,10 +25,6 @@ function Settings() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleCleanup = () => {
-    clenupWorker.postMessage("CLEAN");
-  };
-
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -44,13 +32,15 @@ function Settings() {
       </Button>
 
       <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Настройки</Modal.Title>
+        <Modal.Header className="border-0" closeButton>
+          <Modal.Title className="fw-bold">Настройки</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card>
-            <Card.Header>Хранилище</Card.Header>
-            <Card.Body>
+            <Card.Header className="border-0 bg-transparent">
+              <Card.Title>Хранилище</Card.Title>
+            </Card.Header>
+            <Card.Body className="d-flex flex-column gap-2">
               <ProgressBar
                 now={
                   estimate.quota !== undefined && estimate.usage !== undefined
@@ -58,21 +48,18 @@ function Settings() {
                     : 0
                 }
               />
-              {`Занято ${
-                estimate.usage !== undefined
-                  ? (estimate.usage / 1024 / 1024).toFixed(2)
-                  : 0
-              } Мб из ${
-                estimate.quota !== undefined
-                  ? (estimate.quota / 1024 / 1024).toFixed(2)
-                  : 0
-              } Мб`}
+              <Card.Text>
+                {`Занято ${
+                  estimate.usage !== undefined
+                    ? (estimate.usage / 1024 / 1024).toFixed(2)
+                    : 0
+                } Мб из ${
+                  estimate.quota !== undefined
+                    ? (estimate.quota / 1024 / 1024).toFixed(2)
+                    : 0
+                } Мб`}
+              </Card.Text>
             </Card.Body>
-            <Card.Footer>
-              <Button variant="danger" onClick={handleCleanup}>
-                Очистить
-              </Button>
-            </Card.Footer>
           </Card>
         </Modal.Body>
       </Modal>
