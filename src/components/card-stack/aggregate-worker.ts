@@ -1,6 +1,17 @@
 import { DEFAULT_FOLDER, IMAGE_FILES } from "../../constants/files";
 import { PassBundleShort } from "../../interfaces/pass";
 
+self.addEventListener("install", event => {
+  // forces a service worker to activate immediately
+  self.skipWaiting();
+ });
+
+self.addEventListener("activate", event => {
+ // when this SW becomes activated, we claim all the opened clients
+ // they can be standalone PWA windows or browser tabs
+ event.waitUntil(clients.claim());
+});
+
 self.onmessage = async () => {
   const opfsRoot = await navigator.storage.getDirectory();
   const defaultDirectory = await opfsRoot.getDirectoryHandle(DEFAULT_FOLDER, {
