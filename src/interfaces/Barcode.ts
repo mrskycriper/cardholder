@@ -18,3 +18,9 @@ export interface Barcode {
   format: BarcodeFormat;
   messageEncoding: string;
 }
+
+export interface BarcodeSizing {
+  scale?: number;
+  height?: number;
+  width?: number;
+}

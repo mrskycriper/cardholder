@@ -1,6 +1,10 @@
 import { Card, Image } from "react-bootstrap";
 import { toCanvas } from "bwip-js";
-import { Barcode } from "../../interfaces/barcode";
+import {
+  Barcode,
+  BarcodeFormat,
+  BarcodeSizing,
+} from "../../interfaces/barcode";
 import { PassFieldType } from "../../interfaces/pass-fields";
 import { PassBundleShort } from "../../interfaces/pass";
 import { getPassType } from "../../utilities/get-pass-type";
@@ -34,6 +38,22 @@ function FrontSide({ passBundle }: CardProps) {
     barcode = pass.barcodes[0];
   } else if (pass.barcode) {
     barcode = pass.barcode;
+  }
+
+  const barcodeSize: BarcodeSizing = {};
+
+  if (barcode) {
+    if (barcode.format === BarcodeFormat.Aztec) {
+      //barcodeSize["height"] = 27;
+      //barcodeSize["width"] = 27;
+    } else if (barcode.format === BarcodeFormat.QR) {
+      barcodeSize["height"] = 25;
+      barcodeSize["width"] = 25;
+    } else if (barcode.format === BarcodeFormat.PDF417) {
+      //barcodeSize["height"] = 12;
+    } else if (barcode.format === BarcodeFormat.Code128) {
+      barcodeSize["height"] = 8;
+    }
   }
 
   return (
@@ -124,11 +144,15 @@ function FrontSide({ passBundle }: CardProps) {
                   toCanvas(canvas, {
                     bcid: getBCIDFromBarcodeFormat(barcode.format),
                     text: barcode.message,
-                    scale: 2, // Scaling factor for high-DPI devices
+                    ...barcodeSize,
+                    //scale: 2, // Scaling factor for high-DPI devices
                     //height: 5, // Bar height, in millimeters
                   });
                 }}
               />
+              {barcode.altText ? (
+                <Card.Text className="text-center">{barcode.altText}</Card.Text>
+              ) : null}
             </Card.Body>
           </Card>
         ) : null}
