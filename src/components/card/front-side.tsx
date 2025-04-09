@@ -145,13 +145,13 @@ function FrontSide({ passBundle }: CardProps) {
                     bcid: getBCIDFromBarcodeFormat(barcode.format),
                     text: barcode.message,
                     ...barcodeSize,
-                    //scale: 2, // Scaling factor for high-DPI devices
-                    //height: 5, // Bar height, in millimeters
                   });
                 }}
               />
               {barcode.altText ? (
-                <Card.Text className="text-center">{barcode.altText}</Card.Text>
+                <div className="pt-2" style={{resize: "horizontal", containerType: "inline-size"}}>
+                  <Card.Text  className="text-center text-dark lh-1">{barcode.altText}</Card.Text>
+                </div>
               ) : null}
             </Card.Body>
           </Card>
