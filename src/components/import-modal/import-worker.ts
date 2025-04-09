@@ -33,14 +33,18 @@ self.onmessage = async (e: MessageEvent<File>) => {
   });
 
   for (const entry of entries) {
-    const fileHandle = await unzippedDirectory.getFileHandle(entry.name, {
-      create: true,
-    });
-    // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
-    const accessHandle = await fileHandle.createSyncAccessHandle();
-    const fileData = await entry.async("arraybuffer");
-    accessHandle.write(fileData);
-    accessHandle.close();
+    try {
+      const fileHandle = await unzippedDirectory.getFileHandle(entry.name, {
+        create: true,
+      });
+      // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
+      const accessHandle = await fileHandle.createSyncAccessHandle();
+      const fileData = await entry.async("arraybuffer");
+      accessHandle.write(fileData);
+      accessHandle.close();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const passFileHandle = await unzippedDirectory.getFileHandle("pass.json");

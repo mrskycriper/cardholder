@@ -1,7 +1,7 @@
 # cardholder
 
-## MVP Демо
+[https://mrskycriper.github.io/cardholder/](https://mrskycriper.github.io/cardholder/)
 
-![mvp demo](./MVP%20demo.png)
+[Образцы карточек](./demo/passes/)
 
-_Карточки для примера, заполнены нулями, реальных данных на штрих-кодах нет._
+![card-list.png](./demo/screenshots/card-list.png)
