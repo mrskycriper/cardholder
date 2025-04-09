@@ -4,4 +4,4 @@
 
 [Образцы карточек](./demo/passes/)
 
-![card-list.png](./demo/screenshots/card-list.png)
+<img src="./demo/screenshots/card-list.png" alt="card-list" width="400"/>
