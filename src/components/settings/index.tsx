@@ -27,7 +27,7 @@ function Settings() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow} aria-label="Настройки">
         <i className="ri-settings-4-fill"></i>
       </Button>
 

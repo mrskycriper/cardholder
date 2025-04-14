@@ -38,7 +38,7 @@ function ImportModal() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow} aria-label="Импорт">
         <i className="ri-add-fill"></i>
       </Button>
 
