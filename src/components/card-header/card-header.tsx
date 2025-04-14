@@ -1,8 +1,8 @@
 import { Card } from "react-bootstrap";
 import { PassFieldType } from "../../interfaces/pass-fields";
 import { PassBundleShort } from "../../interfaces/pass";
-import { getPassType } from "../../utilities/get-pass-type";
 import FieldBlock from "../field-block";
+import { translateFields } from "../../utilities/translate-fields";
 
 interface CardHeaderProps {
   passBundle: PassBundleShort;
@@ -10,10 +10,7 @@ interface CardHeaderProps {
 
 function CardHeader({ passBundle }: CardHeaderProps) {
   const pass = passBundle.objects.pass;
-  const passType = getPassType(pass);
-  const passFields = pass[passType];
-  let headerFields = passFields ? passFields[PassFieldType.Header] : undefined;
-
+  let headerFields = translateFields(passBundle, PassFieldType.Header);
   if (headerFields) {
     headerFields = headerFields.slice(0, 3);
   }

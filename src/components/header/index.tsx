@@ -4,15 +4,15 @@ import Settings from "../settings";
 
 function Header() {
   return (
-    <Navbar>
+    <Navbar className="py-3">
       <Container
-        className="d-flex justify-content-between"
+        className="d-flex justify-content-between align-items-center"
         fluid="sm"
         style={{
           maxWidth: "540px",
         }}
       >
-        <Navbar.Brand className="fw-bold">Кошелёк</Navbar.Brand>
+        <Navbar.Brand className="fw-bold h1 fs-1 m-0 p-0">Кошелёк</Navbar.Brand>
         <ButtonGroup>
           <ImportModal />
           <Settings />

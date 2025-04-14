@@ -1,40 +1,27 @@
-import { Card, Image } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { toCanvas } from "bwip-js";
 import {
   Barcode,
   BarcodeFormat,
   BarcodeSizing,
-} from "../../interfaces/barcode";
-import { PassFieldType } from "../../interfaces/pass-fields";
-import { PassBundleShort, PassType } from "../../interfaces/pass";
-import { getPassType } from "../../utilities/get-pass-type";
-import { getBCIDFromBarcodeFormat } from "../../utilities/get-bcid-from-barcode-format";
-import FieldBlock from "../field-block";
-import TransitCard from "./front-side/transit-card";
-import CardHeader from "../card-header/card-header";
+} from "../../../interfaces/barcode";
+import { PassFieldType } from "../../../interfaces/pass-fields";
+import { PassBundleShort } from "../../../interfaces/pass";
+import { getBCIDFromBarcodeFormat } from "../../../utilities/get-bcid-from-barcode-format";
+import FieldBlock from "../../field-block";
+import CardHeader from "../../card-header/card-header";
+import { TRANSIT_ICONS } from "../../../constants/transit-icons";
+import { translateFields } from "../../../utilities/translate-fields";
 
 interface CardProps {
   passBundle: PassBundleShort;
 }
 
-function FrontSide({ passBundle }: CardProps) {
+function TransitCard({ passBundle }: CardProps) {
   const pass = passBundle.objects.pass;
-  const passType = getPassType(pass);
-
-  if (passType === PassType.BoardingPass) {
-    return (<TransitCard passBundle={passBundle}/>)
-  }
-
-  const passFields = pass[passType];
-  const primaryFields = passFields
-    ? passFields[PassFieldType.Primary]
-    : undefined;
-  const secondaryFields = passFields
-    ? passFields[PassFieldType.Secondary]
-    : undefined;
-  const auxiliaryFields = passFields
-    ? passFields[PassFieldType.Auxiliary]
-    : undefined;
+  const primaryFields = translateFields(passBundle, PassFieldType.Primary);
+  const secondaryFields = translateFields(passBundle, PassFieldType.Secondary);
+  const auxiliaryFields = translateFields(passBundle, PassFieldType.Auxiliary);
 
   let barcode: Barcode | undefined;
 
@@ -70,22 +57,32 @@ function FrontSide({ passBundle }: CardProps) {
       }}
     >
       <CardHeader passBundle={passBundle}/>
-      {passBundle.files.strip ? (
-        <Image src={passBundle.files.strip} fluid style={{ width: "100%" }} />
-      ) : null}
       <Card.Body className="d-flex flex-column gap-2">
         {primaryFields ? (
           <div className="d-flex gap-2 justify-content-between">
-            {primaryFields.map((field) => (
-              <FieldBlock
-                key={field.key}
-                field={field}
+            <FieldBlock
+                key={primaryFields[0].key}
+                field={primaryFields[0]}
                 uppercaseLabel
                 reduceLabelSize
                 labelColor={pass.labelColor}
                 valueColor={pass.foregroundColor}
+                primary
               />
-            ))}
+              <div className="px-2">
+                {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                <i className={TRANSIT_ICONS[pass.boardingPass!.transitType]} style={{fontSize: "3rem", color: pass.labelColor}}/>
+              </div>
+              <FieldBlock
+                key={primaryFields[1].key}
+                field={primaryFields[1]}
+                uppercaseLabel
+                reduceLabelSize
+                labelColor={pass.labelColor}
+                valueColor={pass.foregroundColor}
+                alignRight
+                primary
+              />
           </div>
         ) : null}
         {secondaryFields ? (
@@ -151,4 +148,4 @@ function FrontSide({ passBundle }: CardProps) {
   );
 }
 
-export default FrontSide;
+export default TransitCard;
