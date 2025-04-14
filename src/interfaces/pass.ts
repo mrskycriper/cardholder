@@ -28,10 +28,13 @@ export interface Pass {
   backFields?: PassField[];
 }
 
+export type Translation = Record<string, Record<string, string>>
+
 export interface PassBundleShort {
   id: string;
   objects: {
     pass: Pass;
+    translations?: Translation;
   };
   files: {
     icon?: string;

@@ -22,10 +22,10 @@ export enum PKTransitType {
 
 export interface PassField {
   key: string;
-  label: string;
-  value: string | number;
-  textAlignment: PKTextAlignment;
-  numberStyle: PKNumberStyle;
+  label?: string;
+  value?: string | number;
+  textAlignment?: PKTextAlignment;
+  numberStyle?: PKNumberStyle;
 }
 
 export enum PassFieldType {

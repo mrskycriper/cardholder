@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
-import { Card, Image, Modal, Button, ButtonGroup } from "react-bootstrap";
-import { PassFieldType } from "../../interfaces/pass-fields";
+import { Card, Modal, Button, ButtonGroup } from "react-bootstrap";
 import { PassBundleShort } from "../../interfaces/pass";
-import { getPassType } from "../../utilities/get-pass-type";
 import FrontSide from "../card/front-side";
 import BackSide from "../card/back-side";
-import FieldBlock from "../field-block";
+import CardHeader from "../card-header/card-header";
 
 interface PreviewCardProps {
   passBundle: PassBundleShort;
@@ -23,11 +21,6 @@ function PreviewCard({ passBundle }: PreviewCardProps) {
   };
 
   const pass = passBundle.objects.pass;
-  const passType = getPassType(pass);
-  const passFields = pass[passType];
-  const headerFields = passFields
-    ? passFields[PassFieldType.Header]
-    : undefined;
 
   const shareWorker: Worker = useMemo(
     () =>
@@ -55,32 +48,13 @@ function PreviewCard({ passBundle }: PreviewCardProps) {
       <Card
         className="w-100 d-flex flex-column justify-content-center"
         style={{
-          height: "5rem",
           backgroundColor: pass.backgroundColor,
           color: pass.foregroundColor,
           cursor: "pointer",
         }}
         onClick={() => setShowCard(true)}
       >
-        <Card.Header className="d-flex border-0 bg-transparent justify-content-between">
-          {passBundle.files.logo ? (
-            <Image
-              src={passBundle.files.logo}
-              fluid
-              style={{ maxHeight: "3rem", maxWidth: "10rem" }}
-            />
-          ) : null}
-          {pass.logoText ? <Card.Title>{pass.logoText}</Card.Title> : null}
-          {headerFields && headerFields.length > 0 ? (
-            <FieldBlock
-              field={headerFields[0]}
-              uppercaseLabel
-              reduceLabelSize
-              labelColor={pass.labelColor}
-              valueColor={pass.foregroundColor}
-            />
-          ) : null}
-        </Card.Header>
+        <CardHeader passBundle={passBundle} />
       </Card>
 
       <Modal show={showCard} fullscreen="sm-down" onHide={handleCardClose}>
@@ -98,7 +72,7 @@ function PreviewCard({ passBundle }: PreviewCardProps) {
           {!showCardBack ? (
             <FrontSide passBundle={passBundle} />
           ) : (
-            <BackSide passBundle={passBundle} onCardClose={handleCardClose}/>
+            <BackSide passBundle={passBundle} onCardClose={handleCardClose} />
           )}
         </Modal.Body>
       </Modal>

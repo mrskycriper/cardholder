@@ -25,6 +25,9 @@ self.onmessage = async (e: MessageEvent<File>) => {
   pkpassAccessHandle.write(rawPkpassData);
   pkpassAccessHandle.close();
 
+  let translatedPass = false;
+  const translationFiles: Record<string, string>[] = [];
+
   const entries: JSZip.JSZipObject[] = [];
   const zip = new JSZip();
   await zip.loadAsync(rawPkpassData);
@@ -33,17 +36,42 @@ self.onmessage = async (e: MessageEvent<File>) => {
   });
 
   for (const entry of entries) {
-    try {
-      const fileHandle = await unzippedDirectory.getFileHandle(entry.name, {
-        create: true,
-      });
-      // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
-      const accessHandle = await fileHandle.createSyncAccessHandle();
-      const fileData = await entry.async("arraybuffer");
-      accessHandle.write(fileData);
-      accessHandle.close();
-    } catch (e) {
-      console.log(e);
+    if (entry.name.search("/") === -1) {
+      try {
+        const fileHandle = await unzippedDirectory.getFileHandle(entry.name, {
+          create: true,
+        });
+        // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
+        const accessHandle = await fileHandle.createSyncAccessHandle();
+        const fileData = await entry.async("arraybuffer");
+        accessHandle.write(fileData);
+        accessHandle.close();
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      translatedPass = true;
+      try {
+        const langDirectoryName = entry.name.split("/")[0];
+        const langDirectory = await unzippedDirectory.getDirectoryHandle(
+          langDirectoryName,
+          {
+            create: true,
+          }
+        );
+        const fileHandle = await langDirectory.getFileHandle("pass.strings", {
+          create: true,
+        });
+        // @ts-expect-error Crotch for missing type definitions (property 'createSyncAccessHandle' does not exist on type 'FileSystemFileHandle')
+        const accessHandle = await fileHandle.createSyncAccessHandle();
+        const fileData = await entry.async("arraybuffer");
+        const fileDataText = await entry.async("text");
+        accessHandle.write(fileData);
+        accessHandle.close();
+        translationFiles.push({ [langDirectoryName]: fileDataText });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -57,32 +85,52 @@ self.onmessage = async (e: MessageEvent<File>) => {
     files: {},
   };
 
+  if (translatedPass) {
+    passBundle.objects.translations = {};
+    for (const translationFile of translationFiles) {
+      if (
+        Object.keys(translationFile).length !== 0 &&
+        Object.values(translationFile).length !== 0
+      ) {
+        const langName = Object.keys(translationFile)[0].split(".")[0];
+        passBundle.objects.translations[langName] = {};
+        const rawStrings = Object.values(translationFile)[0].split(";\n");
+        for (const pair of rawStrings) {
+          const clean = pair.split(`" = "`);
+          if (clean[0] !== undefined && clean[1] !== undefined) {
+            passBundle.objects.translations[langName][clean[0].replaceAll(`"`, ``)] = clean[1].replaceAll(`"`, ``)
+          }
+        }
+      }
+    }
+  }
+
   for (const key of Object.keys(IMAGE_FILES)) {
     let imageFileHandle: FileSystemFileHandle | undefined = undefined;
     try {
       imageFileHandle = await unzippedDirectory.getFileHandle(
         IMAGE_FILES[key]()
       );
-    } catch (e) {
+    } catch {
       // not found, silent skip
     }
     try {
       imageFileHandle = await unzippedDirectory.getFileHandle(
         IMAGE_FILES[key]("@2x")
       );
-    } catch (e) {
+    } catch {
       // not found, silent skip
     }
     try {
       imageFileHandle = await unzippedDirectory.getFileHandle(
         IMAGE_FILES[key]("@3x")
       );
-    } catch (e) {
+    } catch {
       // not found, silent skip
     }
     if (imageFileHandle !== undefined) {
       const imageFile: File = await imageFileHandle.getFile();
-      // @ts-ignore
+      // @ts-expect-error String is string
       passBundle.files[key] = URL.createObjectURL(imageFile);
     }
   }

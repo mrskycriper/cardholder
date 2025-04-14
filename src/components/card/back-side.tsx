@@ -1,11 +1,11 @@
 import { Button, Card } from "react-bootstrap";
 import { PassFieldType } from "../../interfaces/pass-fields";
 import { PassBundleShort } from "../../interfaces/pass";
-import { getPassType } from "../../utilities/get-pass-type";
 import { removeCard } from "../../store";
 import { useAppDispatch } from "../../store/hooks";
 import FieldBlock from "../field-block";
 import { useMemo } from "react";
+import { translateFields } from "../../utilities/translate-fields";
 
 interface BackSideProps {
   passBundle: PassBundleShort;
@@ -15,12 +15,47 @@ interface BackSideProps {
 function BackSide({ passBundle, onCardClose }: BackSideProps) {
   const dispatch = useAppDispatch();
   const pass = passBundle.objects.pass;
-  const passType = getPassType(pass);
-  const passFields = pass[passType];
-  let backFields = passFields ? passFields[PassFieldType.Back] : undefined;
-  if (backFields === undefined) {
-    backFields = pass.backFields ? pass.backFields : undefined;
-  }
+  const backFields = translateFields(passBundle, PassFieldType.Back);
+  // const passType = getPassType(pass);
+  // const passFields = pass[passType];
+
+  // let rawBackFields = passFields ? passFields[PassFieldType.Back] : undefined;
+
+  // if (rawBackFields === undefined) {
+  //   rawBackFields = pass.backFields ? pass.backFields : undefined;
+  // }
+
+  // let backFields: PassField[] | undefined;
+
+  // if (rawBackFields) {
+  //   if (passBundle.objects.translations) {
+  //     backFields = [];
+  //     for (const rawField of rawBackFields) {
+  //       const newField: PassField = {
+  //         key: rawField.key,
+  //       };
+  //       const label = rawField.label;
+  //       const value = rawField.value?.toString();
+  //       if (label) {
+  //         if (label.search("_") !== -1) {
+  //           newField.label = passBundle.objects.translations["ru"][label];
+  //         } else {
+  //           newField.label = label;
+  //         }
+  //         if (value !== undefined) {
+  //           if (value.search("_") !== -1) {
+  //             newField.value = passBundle.objects.translations["ru"][value];
+  //           } else {
+  //             newField.value = value;
+  //           }
+  //         }
+  //         backFields.push(newField);
+  //       }
+  //     }
+  //   } else {
+  //     backFields = rawBackFields;
+  //   }
+  // }
 
   const deleteWorker: Worker = useMemo(
     () =>
