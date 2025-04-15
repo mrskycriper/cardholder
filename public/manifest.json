@@ -29,8 +29,8 @@
             "purpose": "maskable"
         }
     ],
-    "id": "/cardholder/",
-    "start_url": "./",
+    "id": "https://mrskycriper.github.io/cardholder/",
+    "start_url": "https://mrskycriper.github.io/cardholder/",
     "display": "standalone",
     "orientation": "portrait",
     "theme_color": "#000000",
